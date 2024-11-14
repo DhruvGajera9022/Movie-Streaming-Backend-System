@@ -19,8 +19,6 @@ router.post("/add_settings", imageHelper.uploadSettingImages, settingsController
 // API
 router.get("/api/settings", settingsController.settingsAPI);
 
-router.post("/api/settings", settingsController.postSettingsAPI);
-
 
 
 module.exports = router;
