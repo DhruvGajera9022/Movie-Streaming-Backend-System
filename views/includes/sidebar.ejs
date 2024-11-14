@@ -1,0 +1,116 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="/" class="brand-link">
+    <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      style="opacity: 0.8" />
+    <span class="brand-text font-weight-light">AdminLTE 3</span>
+  </a>
+
+  <div class="sidebar">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img id="UserImage" src="" class="img-circle elevation-2" alt="User Image" style="display:none;" />
+      </div>
+      <div class="info">
+        <a href="#" class="d-block"></a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a href="/" class="nav-link <%= title == "Dashboard"?"active":"" %>">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <!-- Users (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/users" class="nav-link <%= ["Users", "Add User" , "Edit User" ].includes(title) ? "active" : ""
+            %>">
+            <i class="nav-icon fas fa-user-alt"></i>
+            <p>Users</p>
+          </a>
+        </li>
+
+        <!-- Roles (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/role" class="nav-link <%= ["Role", "Add Role" , "Edit Role" ].includes(title) ? "active" : "" %>">
+            <i class="nav-icon fas fa-user-cog"></i>
+            <p>Role</p>
+          </a>
+        </li>
+
+        <!-- Discount (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/discount" class="nav-link <%= ["Discount", "Add Discount" , "Edit Discount" ].includes(title)
+            ? "active" : "" %>">
+            <i class="nav-icon fas fa-percent"></i>
+            <p>Discount</p>
+          </a>
+        </li>
+
+        <!-- Settings (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/settings" class="nav-link <%= ["Settings", "Add Settings" , "Edit Settings" ].includes(title)
+            ? "active" : "" %>">
+            <i class="nav-icon fa fa-cog"></i>
+            <p>Settings</p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split("=");
+      if (name === cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
+      }
+    }
+    return null;
+  }
+
+  $(document).ready(function () {
+    const userPanelInfo = $('.user-panel .info a');
+    const adminNavItems = $('.admin-only');
+
+    const userDataCookie = getCookie('userData');
+
+    if (userDataCookie) {
+      const userData = JSON.parse(decodeURIComponent(userDataCookie.slice(2)));
+
+      const fullName = userData.fullName;
+      const image = userData.image;
+      const role = userData.role;
+
+      if (fullName) {
+        userPanelInfo.html(fullName);
+      }
+      console.log(image);
+      if (image && image.startsWith('image')) {
+        $('#UserImage').attr('src', '/img/userImages/' + image).show();
+      } else if (image) {
+        $('#UserImage').attr('src', image).show();
+      } else {
+        $('#UserImage').hide();
+      }
+      if (role === '1') {
+        adminNavItems.show();
+      }
+    }
+  });
+</script>

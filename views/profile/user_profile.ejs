@@ -1,0 +1,420 @@
+<%- include("../includes/header.ejs") %>
+  <%- include("../includes/sidebar.ejs") %>
+    </style>
+
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <!-- Starting Section -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Profile</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item active">User Profile</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <!-- Image and Name -->
+              <div class="col-md-3">
+                <div class="card card-primary card-outline">
+                  <div class="card-body box-profile">
+                    <div class="text-center">
+                      <img id="UserProfileImage" src="" class="profile-user-img img-circle img-responsive" alt="User Image" style="display: none;" />
+                    </div>
+                    <h3 class="profile-username text-center" id="UserName"></h3>
+                    <p class="text-muted text-center">Software Engineer</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-9">
+                <div class="card">
+                  <div class="card-header p-2">
+                    <ul class="nav nav-pills">
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#activity" data-toggle="tab">Profile</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#settings" data-toggle="tab">Change</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#address" data-toggle="tab">Address</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content">
+                      <div class="active tab-pane" id="activity">
+                        <!-- User Data Card -->
+                        <div class="card text-white bg-dark mb-3">
+                          <div class="card-header bg-primary">
+                            <h5 class="card-title">User Profile</h5>
+                          </div>
+                          <div class="card-body">
+                            <div class="row mb-3">
+                              <label for="inputName" class="col-sm-4 col-form-label">Full Name:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputName">
+                                  <%= userData.fullName %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label for="inputEmail" class="col-sm-4 col-form-label">Email:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputEmail">
+                                  <%= userData.email %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label for="inputNumber" class="col-sm-4 col-form-label">Number:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputNumber">
+                                  <%= userData.number %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label for="inputGender" class="col-sm-4 col-form-label">Gender:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputGender">
+                                  <%= userData.gender %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label for="inputDob" class="col-sm-4 col-form-label">Date of Birth:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputDob">
+                                  <%= userData.formattedDob %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label for="inputHobbies" class="col-sm-4 col-form-label">Hobbies:</label>
+                              <div class="col-sm-8">
+                                <p class="form-control-plaintext text-light" id="inputHobbies">
+                                  <%= userData.hobbies %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Edit Profile Panel -->
+                      <div class="tab-pane" id="settings">
+
+                        <!-- Profile Form -->
+                        <form class="form-horizontal" method="post" id="formProfile" enctype="multipart/form-data"
+                          action="/profile">
+
+                          <!-- Profile Image -->
+                          <div class="form-group row">
+                            <label for="inputImage" class="col-sm-2 col-form-label">Profile Image</label>
+                            <div class="col-sm-10">
+                              <input type="file" class="form-control" name="image" id="inputImage" />
+                              <input type="hidden" name="image_old" value="<%= userData.image %>" />
+                            </div>
+                          </div>
+
+                          <!-- Full Name -->
+                          <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Full Name <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputName" name="fullname"
+                                placeholder="Full Name" value="<%= userData.fullName %>" />
+                            </div>
+                          </div>
+
+                          <!-- Email -->
+                          <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Email <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email"
+                                value="<%= userData.email %>" />
+                            </div>
+                          </div>
+
+                          <!-- Number -->
+                          <div class="form-group row">
+                            <label for="inputNumber" class="col-sm-2 col-form-label">Number <span
+                                class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputNumber" name="number"
+                                placeholder="Number" value="<%= userData.number %>" />
+                            </div>
+                          </div>
+
+                          <!-- Gender -->
+                          <div class="form-group row">
+                            <label for="inputGender" class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-10">
+                              <label for="male">
+                                <input type="radio" name="gender" id="male" value="Male" <% if (userData.gender==="Male"
+                                  ) { %>
+                                checked <% } %> /> Male
+                              </label>
+                              <label for="female">
+                                <input type="radio" name="gender" id="female" value="Female" <% if
+                                  (userData.gender==="Female" ) { %> checked <% } %> /> Female
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="inputDob" class="col-sm-2 col-form-label">Date of Birth</label>
+                            <div class="col-sm-10">
+                              <input type="date" class="form-control" id="inputDob" name="dob"
+                                value="<%= userData.dob %>" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="inputHobbies" class="col-sm-2 col-form-label">Hobbies</label>
+                            <div class="col-sm-10">
+                              <label for="singing">
+                                <input type="checkbox" name="hobby[]" value="Singing" id="singing" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Singing')) { %> checked
+                                <% } %> /> Singing
+                              </label>
+
+                              <label for="dancing">
+                                <input type="checkbox" name="hobby[]" value="Dancing" id="dancing" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Dancing')) { %> checked
+                                <% } %> /> Dancing
+                              </label>
+
+                              <label for="writing">
+                                <input type="checkbox" name="hobby[]" value="Writing" id="writing" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Writing')) { %> checked
+                                <% } %> /> Writing
+                              </label>
+
+                              <label for="reading">
+                                <input type="checkbox" name="hobby[]" value="Reading" id="reading" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Reading')) { %> checked
+                                <% } %> /> Reading
+                              </label>
+
+                              <label for="swimming">
+                                <input type="checkbox" name="hobby[]" value="Swimming" id="swimming" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Swimming')) { %>
+                                checked <% } %> /> Swimming
+                              </label>
+
+                              <label for="travelling">
+                                <input type="checkbox" name="hobby[]" value="Travelling" id="travelling" <% if
+                                  (userData.hobbies && Array.isArray(userData.hobbies) &&
+                                  userData.hobbies.includes('Travelling')) { %>
+                                checked <% } %> /> Travelling
+                              </label>
+                            </div>
+                          </div>
+
+                          <button type="submit" class="btn btn-primary">Edit</button>
+
+                        </form>
+                      </div>
+
+
+                      <div class="tab-pane" id="address">
+
+                        <div id="addressList" class="mt-4">
+                          <h5>Select an Address:</h5>
+                          <div id="addressOptions"></div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" id="btnModel" data-target="#exampleModal"
+                          data-whatever="@mdo">+ Add a new address</button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                          aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" id="formAddress" action="/address">
+
+                                  <input type="hidden" class="form-control" id="id" name="id">
+
+                                  <div class="form-group">
+                                    <label for="fullName" class="col-form-label" style="font-weight: 400;">Full name
+                                      (First and Last
+                                      name): <span
+                                      class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="fullName" name="fullName">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="number" class="col-form-label" style="font-weight: 400;">Mobile
+                                      number <span
+                                      class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="number" name="number">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="no" class="col-form-label" style="font-weight: 400;">Flat, House no,
+                                      Building, Company,
+                                      Apartment <span
+                                      class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="no" name="no">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="street" class="col-form-label" style="font-weight: 400;">Area, Street,
+                                      Sector, Village <span
+                                      class="text-danger">*</span></label>
+                                    <textarea name="street" id="street" class="form-control"></textarea>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="landMark" class="col-form-label"
+                                      style="font-weight: 400;">Landmark</label>
+                                    <input type="text" class="form-control" id="landMark" name="landMark">
+                                  </div>
+
+                                  <div class="container">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label for="city" class="col-form-label"
+                                            style="font-weight: 400;">Town/City <span
+                                            class="text-danger">*</span></label>
+                                          <select name="city" id="city" class="form-control">
+                                            <option value="">Choose City</option>
+                                            <option value="Ahmedabad">Ahmedabad</option>
+                                            <option value="Bengaluru">Bengaluru</option>
+                                            <option value="Chennai">Chennai</option>
+                                            <option value="Gandhinagar">Gandhinagar</option>
+                                            <option value="Jaipur">Jaipur</option>
+                                            <option value="Jamnagar">Jamnagar</option>
+                                            <option value="Junagadh">Junagadh</option>
+                                            <option value="Mumbai">Mumbai</option>
+                                            <option value="Pune">Pune</option>
+                                            <option value="Surat">Surat</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label for="state" class="col-form-label"
+                                            style="font-weight: 400;">State <span
+                                            class="text-danger">*</span></label>
+                                          <select name="state" id="state" class="form-control">
+                                            <option value="">Choose State</option>
+                                            <option value="Assam">Assam</option>
+                                            <option value="Bihar">Bihar</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Goa">Goa</option>
+                                            <option value="Gujarat">Gujarat</option>
+                                            <option value="Kolkata">Kolkata</option>
+                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                            <option value="Maharastra">Maharastra</option>
+                                            <option value="Punjab">Punjab</option>
+                                            <option value="Rajasthan">Rajasthan</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="container">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label for="country" class="col-form-label"
+                                            style="font-weight: 400;">Country <span
+                                            class="text-danger">*</span></label>
+                                          <select name="country" id="country" class="form-control">
+                                            <option value="">Choose Country</option>
+                                            <option value="India">India</option>
+                                            <option value="China">China</option>
+                                            <option value="U.S">U.S</option>
+                                            <option value="U.K">U.K</option>
+                                            <option value="U.A.E">U.A.E</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label for="zipCode" class="col-form-label"
+                                            style="font-weight: 400;">Pincode <span
+                                            class="text-danger">*</span></label>
+                                          <input type="number" class="form-control" id="zipCode" name="zipCode"
+                                            placeholder="6 digit [0-9] PIN code">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="container">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label for="type" class="col-form-label"
+                                            style="font-weight: 400;">Type <span
+                                            class="text-danger">*</span></label>
+                                          <select name="type" id="type" class="form-control">
+                                            <option value="">Choose Type</option>
+                                            <option value="Work">Work</option>
+                                            <option value="Home">Home</option>
+                                            <option value="Office">Office</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <input type="checkbox" name="isDefault" id="isDefault"
+                                            class="mr-1 mt-5"><label for="isDefault" style="font-weight: 400;">Make this
+                                            my
+                                            default address</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" data-target="submit">Submit</button>
+                              </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </section>
+    </div>
+
+    <%- include("../includes/footer.ejs") %>
+      <%- include("../../assets/js/JQuery/user_profile.js") %>
+        </div>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register</title>
+
+    <%- include("../includes/head.ejs") %>
+  </head>
+
+  <body class="hold-transition register-page">
+    <div class="register-box">
+      <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+          <h1><b>Register</b></h1>
+        </div>
+        <div class="card-body">
+          <p class="login-box-msg">Register a new membership</p>
+
+          <% if (errorMsg) { %> <% errorMsg.forEach(function(error) { %> <% if
+          (error.path==='registration' ) { %>
+          <p class="text text-danger"><%= error.msg %></p>
+          <% } %> <% }) %> <% } %>
+
+          <form action="/register" method="post" id="registerPage">
+            
+
+            <div class="input-group">
+              <input
+                type="text"
+                name="fullname"
+                class="form-control"
+                placeholder="Full name"
+                value="<%= formData.fullname ? formData.fullname : '' %>"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+                </div>
+              </div>
+              <div class="input-group mt-2">
+                <% if (errorMsg) { %> <% errorMsg.forEach(function(error) { %>
+                <% if (error.path==='fullname' ) { %>
+                <span class="error-message"> <%= error.msg %> </span>
+                <% } %> <% }) %> <% } %>
+              </div>
+            </div>
+            <span class="error-message"></span>
+
+
+            <div class="input-group mt-3">
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="Email"
+                value="<%= formData.email ? formData.email : '' %>"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+              <div class="input-group mt-2">
+                <% if (errorMsg) { %> <% errorMsg.forEach(function(error) { %>
+                <% if (error.path==='email' ) { %>
+                <span class="error-message"> <%= error.msg %> </span>
+                <% } %> <% }) %> <% } %>
+              </div>
+            </div>
+            <span class="error-message"></span>
+
+
+            <div class="input-group mt-3">
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Password"
+                id="password-input"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text" id="toggle-password">
+                  <span class="fas fa-eye" id="toggle-icon"></span>
+                </div>
+              </div>
+              <div class="input-group mt-2">
+                <% if (errorMsg) { %> <% errorMsg.forEach(function(error) { %>
+                <% if (error.path==='password' ) { %>
+                <span class="error-message"> <%= error.msg %> </span>
+                <% } %> <% }) %> <% } %>
+              </div>
+            </div>
+            <span class="error-message"></span>
+
+
+            <div class="input-group mt-3">
+              <input
+                type="text"
+                name="confirmpassword"
+                class="form-control"
+                placeholder="Retype password"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+              <div class="input-group mt-2">
+                <% if (errorMsg) { %> <% errorMsg.forEach(function(error) { %>
+                <% if (error.path==='confirmpassword' ) { %>
+                <span class="error-message"> <%= error.msg %> </span>
+                <% } %> <% }) %> <% } %>
+              </div>
+            </div>
+            <span class="error-message"></span>
+
+
+            <div class="row mt-3">
+              <div class="col-8">
+                <div class="icheck-primary">
+                  <input
+                    type="checkbox"
+                    id="agreeTerms"
+                    name="terms"
+                    value="agree"
+                  />
+                  <label for="agreeTerms">
+                    I agree to the <a href="#">terms</a>
+                  </label>
+                </div>
+              </div>
+              <!-- /.col -->
+              <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block">
+                  Register
+                </button>
+              </div>
+              <!-- /.col -->
+            </div>
+            
+          </form>
+
+          <div class="social-auth-links text-center">
+            <a href="/auth/facebook" class="btn btn-block btn-primary">
+              <i class="fab fa-facebook mr-2"></i>
+              Sign up using Facebook
+            </a>
+            <a href="/auth/google" class="btn btn-block btn-danger">
+              <i class="fab fa-google-plus mr-2"></i>
+              Sign up using Google
+            </a>
+          </div>
+
+          <a href="/login" class="text-center">I already have a membership</a>
+        </div>
+        <!-- /.form-box -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.register-box -->
+
+    <%- include("../includes/scripts.ejs") %>
+    <script src="js/password.js"></script>
+  </body>
+</html>
