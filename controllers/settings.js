@@ -114,7 +114,7 @@ const addSettings = async (req, res) => {
 
 // To get all settings data
 const getAllSettings = async () => {
-    return await Settings.findAll({});
+    return await Settings.findOne({});
 }
 
 
@@ -133,27 +133,25 @@ const settingsAPI = async (req, res) => {
     let settings = await getAllSettings();
     let baseURL = `${process.env.URL}${process.env.PORT}`;
 
-    settings = settings.map((setting) => {
-        return settingObject = {
-            id: setting.id,
-            email: setting.email,
-            phone: setting.phone,
-            facebook: setting.facebook,
-            twitter: setting.twitter,
-            linkedIn: setting.linkedIn,
-            instagram: setting.instagram,
-            app_store: setting.app_store,
-            play_store: setting.play_store,
-            description: setting.description,
-            privacy_policy: setting.privacy_policy,
-            term_condition: setting.term_condition,
-            logo: `${baseURL}/img/settingImages/${setting.logo}`,
-        }
-    });
+    const settingObject = {
+        id: settings.id,
+        email: settings.email,
+        phone: settings.phone,
+        facebook: settings.facebook,
+        twitter: settings.twitter,
+        linkedIn: settings.linkedIn,
+        instagram: settings.instagram,
+        app_store: settings.app_store,
+        play_store: settings.play_store,
+        description: settings.description,
+        privacy_policy: settings.privacy_policy,
+        term_condition: settings.term_condition,
+        logo: `${baseURL}/img/settingImages/${settings.logo}`,
+    }
 
     return res.json({
         status: true,
-        data: { ...settingObject }
+        data: settingObject
     });
 }
 
