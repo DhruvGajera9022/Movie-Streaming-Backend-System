@@ -134,7 +134,7 @@ const settingsAPI = async (req, res) => {
     let baseURL = `${process.env.URL}${process.env.PORT}`;
 
     settings = settings.map((setting) => {
-        return {
+        return settingObject = {
             id: setting.id,
             email: setting.email,
             phone: setting.phone,
@@ -153,7 +153,7 @@ const settingsAPI = async (req, res) => {
 
     return res.json({
         status: true,
-        data: settings
+        data: { ...settingObject }
     });
 }
 
