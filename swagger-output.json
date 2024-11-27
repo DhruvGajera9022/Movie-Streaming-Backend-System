@@ -1,0 +1,307 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Netflix-Project-API",
+    "description": "This API provides user authentication, profile management, address management, discount retrieval, and application settings for a Netflix-like service.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8001",
+  "basePath": "/",
+  "schemes": ["http"],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Provide the token in the format: `Bearer <token>`"
+    }
+  },
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "User authentication and registration"
+    },
+    { "name": "User Profile", "description": "Managing user profile" },
+    { "name": "Addresses", "description": "Managing user addresses" },
+    { "name": "Discounts", "description": "Managing discounts" },
+    { "name": "Settings", "description": "Application settings" }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": ["Authorization"],
+        "description": "Authenticate a user and return an authorization token.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "user@example.com",
+                  "description": "The email address of the user."
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "The password for the user account."
+                }
+              },
+              "required": ["email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Login successful, returns a token." },
+          "401": { "description": "Invalid credentials provided." },
+          "400": { "description": "Missing or invalid parameters." }
+        }
+      }
+    },
+
+    "/api/register": {
+      "post": {
+        "tags": ["Authorization"],
+        "description": "Register a new user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullname": {
+                  "type": "string",
+                  "example": "Jane Doe",
+                  "description": "Name of the user."
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jane.doe@example.com",
+                  "description": "Email of the user."
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "Password of the user."
+                },
+                "confirmpassword": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "Password of the user."
+                }
+              },
+              "required": ["fullname", "email", "password", "confirmpassword"]
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "User successfully registered." },
+          "400": { "description": "Invalid input data." }
+        }
+      }
+    },
+
+    "/api/changePassword": {
+      "post": {
+        "tags": ["Authorization"],
+        "description": "Change the password for the authenticated user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "New password for the user."
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "Confirmation of the new password."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Password changed successfully." },
+          "401": {
+            "description": "Unauthorized, token is invalid or missing.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "accessDenied": {
+                    "summary": "Access denied error",
+                    "value": { "message": "Access denied. No token provided." }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Validation error in input." }
+        }
+      }
+    },
+
+    "/api/me": {
+      "get": {
+        "tags": ["User Profile"],
+        "description": "Fetch details of the currently authenticated user.",
+        "responses": {
+          "200": { "description": "User details retrieved successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/editProfile/{id}": {
+      "post": {
+        "tags": ["User Profile"],
+        "description": "Edit the profile of the user by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the user to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": { "type": "string", "example": "Jane Doe" },
+                "email": { "type": "string", "example": "jane.doe@example.com" }
+              },
+              "required": ["fullName", "email"]
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Profile updated successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/address": {
+      "get": {
+        "tags": ["Addresses"],
+        "description": "Retrieve addresses for the authenticated user.",
+        "responses": {
+          "200": { "description": "Addresses retrieved successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      },
+      "post": {
+        "tags": ["Addresses"],
+        "description": "Add a new address for the authenticated user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer", "example": 1 },
+                "no": { "type": "integer", "example": 123 },
+                "street": { "type": "string", "example": "Main St" },
+                "city": { "type": "string", "example": "Metropolis" },
+                "state": { "type": "string", "example": "NY" },
+                "zipCode": { "type": "integer", "example": 12345 },
+                "landMark": { "type": "string", "example": "Near park" },
+                "country": { "type": "string", "example": "USA" },
+                "type": { "type": "string", "example": "Home" },
+                "isDefault": { "type": "boolean", "example": true },
+                "fullName": { "type": "string", "example": "John Doe" },
+                "number": { "type": "string", "example": "1234567890" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Address added successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/delete/address/{id}": {
+      "delete": {
+        "tags": ["Addresses"],
+        "description": "Delete an address by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the address to delete."
+          }
+        ],
+        "responses": {
+          "200": { "description": "Address deleted successfully." },
+          "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/discount": {
+      "get": {
+        "tags": ["Discounts"],
+        "description": "Fetch all available discounts.",
+        "responses": {
+          "200": { "description": "List of discounts retrieved successfully." }
+        }
+      }
+    },
+
+    "/api/discount/single": {
+      "get": {
+        "tags": ["Discounts"],
+        "description": "Fetch details of a specific discount.",
+        "parameters": [
+          {
+            "name": "discountId",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the discount to fetch."
+          }
+        ],
+        "responses": {
+          "200": { "description": "Discount details retrieved successfully." },
+          "404": { "description": "Discount not found." }
+        }
+      }
+    },
+
+    "/api/settings": {
+      "get": {
+        "tags": ["Settings"],
+        "description": "Retrieve application settings.",
+        "responses": {
+          "200": { "description": "Settings retrieved successfully." }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

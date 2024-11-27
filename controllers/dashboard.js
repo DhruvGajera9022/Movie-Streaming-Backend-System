@@ -95,6 +95,13 @@ const changePasswordAPI = async (req, res) => {
             });
         }
 
+        if (password.length < 6) {
+            return res.json({
+                status: false,
+                message: "Password must be 6 digits long",
+            });
+        }
+
         if (password !== confirmPassword) {
             return res.json({
                 status: false,

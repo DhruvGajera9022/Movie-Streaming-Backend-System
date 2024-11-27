@@ -31,6 +31,9 @@ const editProfile = async (req, res) => {
     }
 
     const user = req.session.user;
+
+    const role = await Users.findOne({ where: { id: user.id } });
+
     const { fullname, email, number, gender, dob, hobby, image_old } = req.body;
     let image = req.file ? req.file.filename : image_old;
 
@@ -45,7 +48,7 @@ const editProfile = async (req, res) => {
     let userData = {
         fullName: fullname,
         image: image,
-        role: user.role
+        role: role.role
     }
 
     const rowsUpdated = await Users.update(
@@ -243,7 +246,7 @@ const postAddressAPI = async (req, res) => {
     const userId = req.userId;
 
     let {
-        id, no, street, city, state, zipCode,
+        aid, no, street, city, state, zipCode,
         landMark, country, type, isDefault,
         fullName, number
     } = req.body;
@@ -251,9 +254,10 @@ const postAddressAPI = async (req, res) => {
     isDefault = isDefault === "on";
 
 
-    if (id) {
+    if (aid) {
         // Update existing address
-        if (isDefault === true) {
+        if (isDefault) {
+            // Set other addresses as non-default if updating to default
             await Address.update(
                 { isDefault: false },
                 { where: { user_Id: userId } }
@@ -264,13 +268,13 @@ const postAddressAPI = async (req, res) => {
             no, street, city, state, zipCode,
             landMark, country, type, isDefault,
             user_Id: userId, fullName, number
-        }, { where: { id: id } });
+        }, { where: { id: aid } });
 
-        if (isAddressUpdated > 0) {
+        if (isAddressUpdated[0] > 0) {
             return res.json({
                 status: true,
                 message: 'Address updated successfully!',
-                address: { id, no, street, city, state, zipCode, landMark, country, type, isDefault, user_Id: userId, fullName, number }
+                address: { aid, no, street, city, state, zipCode, landMark, country, type, isDefault, user_Id: userId, fullName, number }
             });
         } else {
             return res.json({

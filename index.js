@@ -13,6 +13,10 @@ const roleRoute = require("./routes/roleRoute");
 const discountRoute = require("./routes/discountRoute");
 const settingsRoute = require("./routes/settingsRoute");
 
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
+
+
 // Initialize app
 const app = express();
 
@@ -53,6 +57,8 @@ app.use("/", userRoute);
 app.use("/", roleRoute);
 app.use("/", discountRoute);
 app.use("/", settingsRoute);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
 // start server
