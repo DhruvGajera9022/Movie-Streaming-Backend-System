@@ -163,30 +163,34 @@
       }
     },
 
-    "/api/editProfile/{id}": {
+    "/api/editProfile": {
       "post": {
         "tags": ["User Profile"],
-        "description": "Edit the profile of the user by ID.",
+        "description": "Edit the profile of the user by ID, including updating their profile picture.",
+        "consumes": ["multipart/form-data"],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "fullName",
+            "in": "formData",
             "required": true,
             "type": "string",
-            "description": "The ID of the user to update."
+            "description": "The full name of the user.",
+            "example": "Jane Doe"
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "email",
+            "in": "formData",
             "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "fullName": { "type": "string", "example": "Jane Doe" },
-                "email": { "type": "string", "example": "jane.doe@example.com" }
-              },
-              "required": ["fullName", "email"]
-            }
+            "type": "string",
+            "description": "The email address of the user.",
+            "example": "jane.doe@example.com"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": false,
+            "type": "file",
+            "description": "The profile picture of the user."
           }
         ],
         "responses": {
