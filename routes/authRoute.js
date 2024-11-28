@@ -6,9 +6,7 @@ require("../passport");
 
 const authController = require("../controllers/auth");
 
-const imageHelper = require("../helpers/store_image");
 const Middleware = require("../middlewares/auth_middleware");
-const JWTMiddleware = require("../middlewares/jwt_token");
 
 
 router.use(passport.initialize());
@@ -54,6 +52,10 @@ router.post("/recover_password/:id", authController.validatePasswordChange, auth
 // API
 router.post("/api/login", authController.loginAPI);
 router.post("/api/register", authController.validateRegistration, authController.registerAPI);
+
+router.get("/verify-email", authController.verifiedEmail);
+
+
 
 
 

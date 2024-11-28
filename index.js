@@ -4,6 +4,7 @@ require("dotenv").config();
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const cors = require("cors");
+const morgan = require("morgan");
 
 const authRoute = require("./routes/authRoute");
 const dashboardRoute = require("./routes/dashboardRoute");
@@ -25,6 +26,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'));
 
 
 // Setup view engine 
@@ -59,6 +61,10 @@ app.use("/", discountRoute);
 app.use("/", settingsRoute);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+
+// Initialize Send Mail
+
 
 
 // start server

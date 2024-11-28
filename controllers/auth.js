@@ -1,10 +1,13 @@
 const bcrypt = require("bcrypt");
 const Users = require("../models/user");
 require("dotenv").config();
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require("express-validator");
 const JWT = require("jsonwebtoken");
 require("../passport");
+const sgMail = require("@sendgrid/mail");
+const crypto = require("crypto");
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 // To display login page
@@ -20,7 +23,7 @@ const loginUser = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        errors.array().forEach(err => {
+        errors.array().forEach((err) => {
             errorMsg.push({
                 param: err.param,
                 msg: err.msg,
@@ -42,7 +45,7 @@ const loginUser = async (req, res) => {
             param: "email",
             msg: "Invalid email",
             value: email,
-            path: 'email',
+            path: "email",
         });
         return res.render("authentication/login_page", {
             errorMsg,
@@ -57,21 +60,21 @@ const loginUser = async (req, res) => {
         fullName: user.fullName,
         image: user.image,
         role: user.role,
-        token: token
-    }
+        token: token,
+    };
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
         req.session.user = { id: user.id, fullName: user.fullName, token: token };
-        res.cookie('userData', userData);
+        res.cookie("userData", userData);
         return res.redirect("/");
     } else {
         errorMsg.push({
             param: "password",
             msg: "Invalid password",
             value: password,
-            path: 'password',
+            path: "password",
         });
         return res.render("authentication/login_page", {
             errorMsg,
@@ -81,8 +84,8 @@ const loginUser = async (req, res) => {
 };
 // To validate login fields
 const validateLogin = [
-    check('email', 'Email is required').notEmpty(),
-    check('password', 'Password is required').notEmpty(),
+    check("email", "Email is required").notEmpty(),
+    check("password", "Password is required").notEmpty(),
 ];
 
 
@@ -100,7 +103,7 @@ const registerUser = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        errors.array().forEach(err => {
+        errors.array().forEach((err) => {
             errorMsg.push({
                 param: err.param,
                 msg: err.msg,
@@ -122,7 +125,7 @@ const registerUser = async (req, res) => {
             param: "email",
             msg: "User with this email already exists.",
             value: email,
-            path: 'email',
+            path: "email",
         });
         return res.render("authentication/register_page", {
             errorMsg,
@@ -130,7 +133,10 @@ const registerUser = async (req, res) => {
         });
     }
 
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
+    const hashedPassword = await bcrypt.hash(
+        password,
+        parseInt(process.env.SALT)
+    );
 
     const isUserCreated = await Users.create({
         fullName: fullname,
@@ -145,7 +151,7 @@ const registerUser = async (req, res) => {
             param: "registration",
             msg: "User registration failed.",
             value: null,
-            path: 'registration',
+            path: "registration",
         });
         return res.render("authentication/register_page", {
             errorMsg,
@@ -155,10 +161,16 @@ const registerUser = async (req, res) => {
 };
 // To validate register fields
 const validateRegistration = [
-    check('fullname', 'Full name is required').notEmpty(),
-    check('email', 'Email is required').isEmail().withMessage('Enter a valid email'),
-    check('password', 'Password must be at least 6 characters long').isLength({ min: 6 }),
-    check('confirmpassword', 'Passwords do not match').custom((value, { req }) => value === req.body.password),
+    check("fullname", "Full name is required").notEmpty(),
+    check("email", "Email is required")
+        .isEmail()
+        .withMessage("Enter a valid email"),
+    check("password", "Password must be at least 6 characters long").isLength({
+        min: 6,
+    }),
+    check("confirmpassword", "Passwords do not match").custom(
+        (value, { req }) => value === req.body.password
+    ),
 ];
 
 
@@ -174,7 +186,7 @@ const checkEmail = async (req, res) => {
     let { email } = req.body;
 
     if (!errors.isEmpty()) {
-        errors.array().forEach(err => errorMsg.push(err.msg));
+        errors.array().forEach((err) => errorMsg.push(err.msg));
         return res.render("authentication/forgot_password", { errorMsg });
     }
 
@@ -189,7 +201,9 @@ const checkEmail = async (req, res) => {
 };
 // To validate forgot-password fields
 const validateForgotPassword = [
-    check('email', 'Email is required').isEmail().withMessage('Enter a valid email')
+    check("email", "Email is required")
+        .isEmail()
+        .withMessage("Enter a valid email"),
 ];
 
 
@@ -208,11 +222,17 @@ const changePassword = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        errors.array().forEach(err => errorMsg.push(err.msg));
-        return res.render("authentication/recover_password", { userId: id, errorMsg });
+        errors.array().forEach((err) => errorMsg.push(err.msg));
+        return res.render("authentication/recover_password", {
+            userId: id,
+            errorMsg,
+        });
     }
 
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
+    const hashedPassword = await bcrypt.hash(
+        password,
+        parseInt(process.env.SALT)
+    );
 
     const isPasswordUpdated = await Users.update(
         { password: hashedPassword },
@@ -223,13 +243,20 @@ const changePassword = async (req, res) => {
         return res.redirect("/login");
     } else {
         errorMsg.push("User not found or password update failed.");
-        return res.render("authentication/recover_password", { userId: id, errorMsg });
+        return res.render("authentication/recover_password", {
+            userId: id,
+            errorMsg,
+        });
     }
 };
 // To validate password fields
 const validatePasswordChange = [
-    check('password', 'Password must be at least 6 characters long').isLength({ min: 6 }),
-    check('confirmpassword', 'Passwords do not match').custom((value, { req }) => value === req.body.password),
+    check("password", "Password must be at least 6 characters long").isLength({
+        min: 6,
+    }),
+    check("confirmpassword", "Passwords do not match").custom(
+        (value, { req }) => value === req.body.password
+    ),
 ];
 
 
@@ -252,12 +279,12 @@ const registerWithGoogle = async (req, res) => {
         fullName: displayName,
         email: email,
         image: picture,
-    }
+    };
 
     req.session.user = { id: user.id, fullName: user.fullName };
-    res.cookie('userData', userData);
+    res.cookie("userData", userData);
     res.redirect("/");
-}
+};
 // To store data in database from facebook register
 const registerWithFacebook = async (req, res) => {
     const { displayName, emails, photos } = req.user;
@@ -278,13 +305,12 @@ const registerWithFacebook = async (req, res) => {
         fullName: displayName,
         email: email,
         image: photos ? photos[0].value : null,
-    }
-
+    };
 
     req.session.user = { id: user.id, fullName: user.fullName };
-    res.cookie('userData', userData);
+    res.cookie("userData", userData);
     res.redirect("/");
-}
+};
 
 
 
@@ -295,7 +321,7 @@ const loginAPI = async (req, res) => {
 
     // Check for validation errors
     if (!errors.isEmpty()) {
-        errors.array().forEach(err => {
+        errors.array().forEach((err) => {
             errorMsg.push({
                 param: err.param,
                 msg: err.msg,
@@ -318,7 +344,7 @@ const loginAPI = async (req, res) => {
             param: "email",
             msg: "User with this email does not exist",
             value: email,
-            path: 'email',
+            path: "email",
         });
         return res.json({
             status: false,
@@ -333,7 +359,7 @@ const loginAPI = async (req, res) => {
             param: "password",
             msg: "Invalid password",
             value: password,
-            path: 'password',
+            path: "password",
         });
         return res.json({
             status: false,
@@ -343,11 +369,11 @@ const loginAPI = async (req, res) => {
 
     // Generate JWT token
     const token = JWT.sign({ id: user.id }, process.env.TOKEN_SECRET);
-    console.log('Generated Token:', token);
+    console.log("Generated Token:", token);
 
     // Set session and cookie
     req.session.user = { id: user.id, fullName: user.fullName };
-    res.cookie('userData', { id: user.id, fullName: user.fullName });
+    res.cookie("userData", { id: user.id, fullName: user.fullName });
 
     let baseURL = `${process.env.URL}${process.env.PORT}`;
 
@@ -359,68 +385,127 @@ const loginAPI = async (req, res) => {
             fullName: user.fullName,
             email: user.email,
             image: user.image ? `${baseURL}/img/userImages/${user.image}` : null,
-        }
+        },
     });
 };
 // API for registration
 const registerAPI = async (req, res) => {
-    const errorMsg = [];
-    const errors = validationResult(req);
+    try {
+        const errorMsg = [];
+        const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        errors.array().forEach(err => {
-            errorMsg.push({
-                param: err.param,
-                msg: err.msg,
-                value: err.value,
-                path: err.path,
+        if (!errors.isEmpty()) {
+            errors.array().forEach((err) => {
+                errorMsg.push({
+                    param: err.param,
+                    msg: err.msg,
+                    value: err.value,
+                    path: err.path,
+                });
             });
-        });
+
+            return res.json({
+                status: false,
+                message: errorMsg,
+            });
+        }
+
+        let { fullname, email, password } = req.body;
+
+        const existingUser = await Users.findOne({ where: { email } });
+        if (existingUser) {
+            errorMsg.push({
+                param: "email",
+                msg: "User with this email already exists.",
+                value: email,
+                path: "email",
+            });
+        }
+
+        if (errorMsg.length == 0) {
+            const hashedPassword = await bcrypt.hash(
+                password,
+                parseInt(process.env.SALT)
+            );
+
+            const emailToken = crypto.randomBytes(64).toString("hex");
+
+            const isUserCreated = await Users.create({
+                fullName: fullname,
+                email: email,
+                password: hashedPassword,
+                emailToken: emailToken,
+                isVerified: false,
+            });
+
+            // Send verification email
+            const verificationURL = `${process.env.URL}${process.env.PORT}/verify-email?emailToken=${emailToken}`;
+            const msg = {
+                from: {
+                    name: "Netflix-Project",
+                    email: "dhruvgajera05@gmail.com",
+                },
+                to: email,
+                subject: "Netflix-Project - Verify Your Email",
+                text: `Hello, thanks for registering on our site. Please verify your account: ${verificationURL}`,
+                html: `
+                    <h1>Hello,</h1>
+                    <p>Thanks for registering on our site.</p>
+                    <p>Please click the link below to verify your account:</p>
+                    <a href="${verificationURL}">Verify Your Account</a>
+                `,
+            };
+            await sgMail.send(msg);
+
+            // Respond to the client
+            return res.status(201).json({
+                status: true,
+                message: "Thanks for registering. Please check your email to verify your account.",
+            });
+        }
 
         return res.json({
+            status: errorMsg.length > 0 ? false : true,
+            message: errorMsg.length > 0 ? errorMsg : "Registration successfully",
+        });
+    } catch (error) {
+        res.json({
             status: false,
-            message: errorMsg,
-        });
+            message: "Error in Register API"
+        })
     }
+};
+// Verify Email
+const verifiedEmail = async (req, res) => {
+    try {
 
-    let { fullname, email, password } = req.body;
+        const { emailToken } = req.query;
 
-    const existingUser = await Users.findOne({ where: { email } });
-    if (existingUser) {
-        errorMsg.push({
-            param: "email",
-            msg: "User with this email already exists.",
-            value: email,
-            path: 'email',
-        });
-    }
-
-    if (errorMsg.length == 0) {
-        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
-
-        const isUserCreated = await Users.create({
-            fullName: fullname,
-            email: email,
-            password: hashedPassword,
-        });
-
-        if (isUserCreated) {
-            message: "Registration successfull"
-        } /*else {
-            errorMsg.push({
-                param: "registration",
-                msg: "User registration failed.",
-                value: null,
-                path: 'registration',
+        // Find the user by email token
+        const user = await Users.findOne({ where: { emailToken } });
+        if (!user) {
+            return res.json({
+                status: false,
+                message: "Invalid or expired email token.",
             });
-        }*/
-    }
+        }
 
-    return res.json({
-        status: errorMsg.length > 0 ? false : true,
-        message: errorMsg.length > 0 ? errorMsg : 'Registration successfull'
-    });
-}
+        // Update user verification status
+        user.emailToken = null;
+        user.isVerified = true;
+        await user.save();
+
+        res.json({
+            status: true,
+            message: "Email verified successfully.",
+        });
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in check Email Token",
+        });
+    }
+};
 
 
 
@@ -445,4 +530,5 @@ module.exports = {
 
     registerAPI,
     loginAPI,
+    verifiedEmail,
 };
