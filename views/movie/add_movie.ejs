@@ -1,0 +1,254 @@
+<%- include("../includes/header.ejs") %> <%- include("../includes/sidebar.ejs") %>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <!-- Main content -->
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="card card-primary">
+                                                <% if(movie){ %>
+                                                    <div class="card-header bg-success">
+                                                        <h3 class="text-light">Edit Movie</h3>
+                                                    </div>
+                                                    <% }else{ %>
+                                                        <div class="card-header bg-primary">
+                                                            <h3 class="text-light">Add Movie</h3>
+                                                        </div>
+                                                        <% } %>
+                                                            <form action="/add_movie" method="post" id="formAddMovie" enctype="multipart/form-data">
+                                                                <div class="card-body">
+                                                                    <input type="hidden" name="id"
+                                                                        value="<%= movie ? movie.id : '' %>" />
+
+
+                                                                    <!-- Title -->
+                                                                    <div class="form-group row">
+                                                                        <label for="title"
+                                                                            class="col-sm-2 col-form-label">Title <span
+                                                                                class="text-danger">*</span>
+                                                                        </label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" class="form-control"
+                                                                                id="title" name="title"
+                                                                                placeholder="Enter Title"
+                                                                                value="<%= movie ? movie.title : '' %>" />
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Overview -->
+                                                                    <div class="form-group row">
+                                                                        <label for="overview"
+                                                                            class="col-sm-2 col-form-label">Overview</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea name="overview" id="overview"
+                                                                                class="form-control"
+                                                                                placeholder="Enter Overview"><%= movie ? movie.overview : '' %></textarea>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Category -->
+                                                                    <div class="form-group row">
+                                                                        <label for="category"
+                                                                            class="col-sm-2 col-form-label">Category
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <div class="col-sm-10">
+                                                                            <select name="category" id="category"
+                                                                                class="form-control">
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Original Language - Original Title -->
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="original_language"
+                                                                                    class="col-sm-2 col-form-label col-sm-3">Original
+                                                                                    Language</label>
+                                                                                <div class="col-sm-7 ml-5">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        id="original_language"
+                                                                                        name="original_language"
+                                                                                        placeholder="Enter Original Language"
+                                                                                        value="<%= movie ? movie.original_language : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="password"
+                                                                                    class="col-sm-3 col-form-label">Original
+                                                                                    Title</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        id="original_title"
+                                                                                        name="original_title"
+                                                                                        placeholder="Enter Original Title"
+                                                                                        value="<%= movie ? movie.original_title : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Popularity - Release Data -->
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="original_language"
+                                                                                    class="col-sm-2 col-form-label col-sm-3">Popularity</label>
+                                                                                <div class="col-sm-7 ml-5">
+                                                                                    <input type="number"
+                                                                                        class="form-control"
+                                                                                        id="popularity"
+                                                                                        name="popularity"
+                                                                                        placeholder="Enter Popularity"
+                                                                                        value="<%= movie ? movie.popularity : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="password"
+                                                                                    class="col-sm-3 col-form-label">Release
+                                                                                    Date</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="date"
+                                                                                        class="form-control"
+                                                                                        id="release_date"
+                                                                                        name="release_date"
+                                                                                        value="<%= movie ? movie.release_date : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Adult - Video -->
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="adult"
+                                                                                    class="col-sm-2 col-form-label col-sm-3">Adult</label>
+                                                                                <div class="col-sm-7 ml-5">
+                                                                                    <label for="adult">
+                                                                                        <input type="checkbox"
+                                                                                            name="adult" id="adult" <%
+                                                                                            if(movie && movie.adult==1){
+                                                                                            %>
+                                                                                        checked <% } %>> Adult
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="video"
+                                                                                    class="col-sm-3 col-form-label">Video</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <label for="video">
+                                                                                        <input type="checkbox"
+                                                                                            name="video" id="video" <%
+                                                                                            if(movie && movie.video==1){
+                                                                                            %>
+                                                                                        checked <% } %>> Video
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Rating - Reviews -->
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="adult"
+                                                                                    class="col-sm-2 col-form-label col-sm-3">Rating</label>
+                                                                                <div class="col-sm-7 ml-5">
+                                                                                    <input type="number"
+                                                                                        class="form-control"
+                                                                                        id="vote_average"
+                                                                                        name="vote_average"
+                                                                                        placeholder="0.0" min="0"
+                                                                                        max="100000" step="0.01"
+                                                                                        value="<%= movie ? movie.vote_average : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group row">
+                                                                                <label for="video"
+                                                                                    class="col-sm-3 col-form-label">Reviews</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="number"
+                                                                                        class="form-control"
+                                                                                        id="vote_count"
+                                                                                        name="vote_count"
+                                                                                        placeholder="000"
+                                                                                        value="<%= movie ? movie.vote_count : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Poster -->
+                                                                    <div class="form-group row">
+                                                                        <label for="image"
+                                                                            class="col-sm-2 col-form-label">Poster</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="file" name="image" id="image"
+                                                                                class="form-control"><br>
+                                                                            <% if(movie && movie.poster_path){ %>
+                                                                                <img src="/img/movieImages/<%= movie.poster_path %>"
+                                                                                    alt="Category Image" width="70px"
+                                                                                    height="70px">
+                                                                                <input type="hidden" name="image_old"
+                                                                                    value="<%= movie.poster_path %>" />
+                                                                                <% } %>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    
+                                                                    <!-- Submit Button -->
+                                                                    <div class="card-footer">
+                                                                        <button type="submit" name="add"
+                                                                            class="btn btn-<% if(movie){ %>success<% }else{ %>primary<% } %>">
+                                                                            <% if(movie){ %> Edit <% }else{ %> Add <% }
+                                                                                        %>
+                                                                        </button>
+                                                                    </div>
+                                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+        </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
+
+        <%- include("../includes/footer.ejs") %>
+            <%- include("../../assets/js/JQuery/add_product.js") %>

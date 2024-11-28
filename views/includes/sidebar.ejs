@@ -53,6 +53,14 @@
           </a>
         </li>
 
+        <!-- Movie (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/movie" class="nav-link <%= ["Movie", "Add Movie" , "Edit Movie" ].includes(title) ? "active" : "" %>">
+            <i class="nav-icon fa fa-play-circle"></i>
+            <p>Movie</p>
+          </a>
+        </li>
+
         <!-- Discount (Initially hidden) -->
         <li class="nav-item admin-only" style="display:none;">
           <a href="/discount" class="nav-link <%= ["Discount", "Add Discount" , "Edit Discount" ].includes(title)

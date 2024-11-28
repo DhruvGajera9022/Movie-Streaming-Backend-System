@@ -1,0 +1,118 @@
+<%- include("../includes/header.ejs") %>
+  <%- include("../includes/sidebar.ejs") %>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Movies</h1>
+            </div>
+          </div>
+
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-row-reverse mb-3">
+                        <a href="/add_movie" class="btn btn-primary">Add</a>
+                      </div>
+                      <div class="table-responsive-sm">
+                        <table id="movietable" class="table table-dark table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                              <th>Poster</th>
+                              <th>Title</th>
+                              <th>Overview</th>
+                              <th>Categories</th>
+                              <th>Language</th>
+                              <th>Original Title</th>
+                              <th>Backdrop Path</th>
+                              <th>Popularity</th>
+                              <th>Release Date</th>
+                              <th>Rating</th>
+                              <th>Total Reviews</th>
+                              <th>isAdult</th>
+                              <th>Video</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% allMovies.forEach(data=> { %>
+                              <tr>
+                                <td>
+                                  <img src="img/movieImages/<%= data.poster_path %>" height="40" width="40">
+                                </td>
+                                <td>
+                                  <%= data.title %>
+                                </td>
+                                <td>
+                                  <%= data.overview %>
+                                </td>
+                                <td>
+                                  <%= data.genre_ids %>
+                                </td>
+                                <td>
+                                  <%= data.original_language %>
+                                </td>
+                                <td>
+                                  <%= data.original_title %>
+                                </td>
+                                <td>
+                                  <img src="img/movieImages/<%= data.backdrop_path %>" height="40" width="40">
+                                </td>
+                                <td>
+                                  <%= data.popularity %>
+                                </td>
+                                <td>
+                                  <%= data.release_date %>
+                                </td>
+                                <td>
+                                  <%= data.vote_average %>
+                                </td>
+                                <td>
+                                  <%= data.vote_count %>
+                                </td>
+                                <td>
+                                  <%= data.adult %>
+                                </td>
+                                <td>
+                                  <%= data.video %>
+                                </td>
+                                <td>
+                                  <a href="/add_movie/<%= data.id %>" class="text-success">
+                                    <i class="fas fa-edit fa-lg mx-1"></i>
+                                  </a>
+                                  <form action="/add_movie/delete/<%= data.id %>" method="POST" style="display: inline" onsubmit="return confirm('Are you sure?')">
+                                    <button type="submit" style="background: none; border: none; cursor: pointer">
+                                      <i class="fas fa-trash fa-lg mx-1" style="color: red"></i>
+                                    </button>
+                                  </form>
+                                </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+    </div>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
+
+    <%- include("../includes/footer.ejs") %>
+      </body>
+
+      </html>
