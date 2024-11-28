@@ -22,6 +22,7 @@
       "description": "User authentication and registration"
     },
     { "name": "User Profile", "description": "Managing user profile" },
+    { "name": "Movies Management", "description": "Managing movies" },
     { "name": "Addresses", "description": "Managing user addresses" },
     { "name": "Discounts", "description": "Managing discounts" },
     { "name": "Settings", "description": "Application settings" }
@@ -196,6 +197,19 @@
         "responses": {
           "200": { "description": "Profile updated successfully." },
           "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/category": {
+      "get": {
+        "tags": ["Movies Management"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Categories details retrieved successfully."
+          },
+          "401": { "description": "Categories not found." }
         }
       }
     },

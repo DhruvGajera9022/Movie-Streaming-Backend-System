@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     $("#categorytable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 3] }]
+        columnDefs: [{ orderable: false, targets: [2] }]
     })
 
     $("#productstable").dataTable({

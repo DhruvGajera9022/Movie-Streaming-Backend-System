@@ -11,6 +11,7 @@ const dashboardRoute = require("./routes/dashboardRoute");
 const profileRoute = require("./routes/profileRoute");
 const userRoute = require("./routes/userRoute");
 const roleRoute = require("./routes/roleRoute");
+const categoryRoute = require("./routes/categoryRoute");
 const discountRoute = require("./routes/discountRoute");
 const settingsRoute = require("./routes/settingsRoute");
 
@@ -57,17 +58,15 @@ app.use("/", dashboardRoute);
 app.use("/", profileRoute);
 app.use("/", userRoute);
 app.use("/", roleRoute);
+app.use("/", categoryRoute);
 app.use("/", discountRoute);
 app.use("/", settingsRoute);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
-// Initialize Send Mail
-
-
-
 // start server
 app.listen(process.env.PORT, () => {
     console.log(`Server started at ${process.env.URL}${process.env.PORT}`);
+    console.log(`Swagger Docs at ${process.env.URL}${process.env.PORT}/api-docs`);
 });

@@ -1,0 +1,80 @@
+<%- include("../includes/header.ejs") %>
+    <%- include("../includes/sidebar.ejs") %>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Categories</h1>
+                        </div>
+                    </div>
+
+                    <!-- Main content -->
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex flex-row-reverse mb-3">
+                                                <a href="/add_category" class="btn btn-primary">Add</a>
+                                            </div>
+                                            <div class="table-responsive-sm">
+                                                <table id="categorytable"
+                                                    class="table table-dark table-striped table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Active</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% allData.forEach(data=> { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= data.name %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= data.isActive %>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="/add_category/<%= data.id %>"
+                                                                        class="text-success">
+                                                                        <i class="fas fa-edit fa-lg mx-1"></i>
+                                                                    </a>
+                                                                    <form action="/add_category/delete/<%= data.id %>"
+                                                                        method="POST" style="display: inline"
+                                                                        onsubmit="return confirm('Are you sure?')">
+                                                                        <button type="submit"
+                                                                            style="background: none; border: none; cursor: pointer">
+                                                                            <i class="fas fa-trash fa-lg mx-1"
+                                                                                style="color: red"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+        </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
+
+        <%- include("../includes/footer.ejs") %>
+            </body>
+
+            </html>

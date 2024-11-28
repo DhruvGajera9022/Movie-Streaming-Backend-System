@@ -45,6 +45,14 @@
           </a>
         </li>
 
+        <!-- Category (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/category" class="nav-link <%= ["Category", "Add Category" , "Edit Category" ].includes(title) ? "active" : "" %>">
+            <i class="nav-icon fa fa-list-alt"></i>
+            <p>Category</p>
+          </a>
+        </li>
+
         <!-- Discount (Initially hidden) -->
         <li class="nav-item admin-only" style="display:none;">
           <a href="/discount" class="nav-link <%= ["Discount", "Add Discount" , "Edit Discount" ].includes(title)
