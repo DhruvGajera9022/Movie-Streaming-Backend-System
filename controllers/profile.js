@@ -366,9 +366,10 @@ const updateProfileAPI = async (req, res) => {
     try {
         const userId = req.userId;
         const { fullName, email } = req.body;
+        let baseURL = `${process.env.URL}${process.env.PORT}`;
 
         // Find the user by ID
-        const user = await Users.findOne({ where: { id: userId } });
+        let user = await Users.findOne({ where: { id: userId } });
         if (!user) {
             return res.json({
                 status: false,
@@ -396,10 +397,25 @@ const updateProfileAPI = async (req, res) => {
         // Save the changes
         await user.save();
 
+        // Prepare response object
+        const updatedUser = {
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+            number: user.number,
+            gender: user.gender,
+            dob: user.dob,
+            hobbies: user.hobbies,
+            image: `${baseURL}/img/userImages/${user.image}`,
+            role: user.role,
+            emailToken: user.emailToken,
+            isVerified: user.isVerified,
+        };
+
         return res.json({
             status: true,
             message: 'Profile updated successfully',
-            user,
+            user: updatedUser,
         });
     } catch (error) {
         return res.json({

@@ -1,10 +1,19 @@
 const Movies = require("../models/movie");
 const fs = require('fs');
+const dateHelper = require("../helpers/date_formator");
 
 
 // To display movie page
 const getMovies = async (req, res) => {
     let allMovies = await getAllMovies();
+
+    allMovies = allMovies.map(movie => {
+        return {
+            ...movie.dataValues,
+            formattedDate: dateHelper.formatDate(movie.release_date)
+        }
+    });
+
     res.render("movie/movie", {
         title: "Movie",
         allMovies,

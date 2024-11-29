@@ -214,6 +214,19 @@
       }
     },
 
+    "/api/movies": {
+      "get": {
+        "tags": ["Movies Management"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Movies details retrieved successfully."
+          },
+          "401": { "description": "Movies not found." }
+        }
+      }
+    },
+
     "/api/address": {
       "get": {
         "tags": ["Addresses"],
