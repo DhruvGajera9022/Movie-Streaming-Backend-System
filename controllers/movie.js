@@ -12,7 +12,6 @@ const getMovies = async (req, res) => {
     allMovies = await Promise.all(
         allMovies.map(async (movie) => {
             const genreIds = movie.genre_ids;
-            // console.log(genreIds);
 
             const categories = await Promise.all(
                 genreIds.map(async (categoryId) => {
@@ -131,7 +130,7 @@ const addOrEditMovie = async (req, res) => {
             const newMovie = await Movies.create({
                 title,
                 overview,
-                genre_ids: category,
+                genre_ids: category.length > 0 ? category.join(',') : null,
                 original_language,
                 original_title,
                 popularity,

@@ -23,14 +23,11 @@ const Role = sequelize.define("movies", {
         type: Sequelize.STRING,
     },
     genre_ids: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
         get() {
             const value = this.getDataValue('genre_ids');
             return value ? value.split(',') : [];
         },
-        set(value) {
-            this.setDataValue('genre_ids', value.join(','));
-        }
     },
     original_language: {
         type: Sequelize.STRING,
