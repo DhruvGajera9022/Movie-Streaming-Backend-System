@@ -25,6 +25,6 @@
                 console.error('Failed to fetch categories:', error);
                 $('#category').html('<option disabled>Failed to load category</option>');
             }
-        });
-});
+        })
+    });
 </script>

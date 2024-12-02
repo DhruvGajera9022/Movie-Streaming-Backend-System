@@ -5,6 +5,7 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const cors = require("cors");
 const morgan = require("morgan");
+const color = require("colors");
 
 const authRoute = require("./routes/authRoute");
 const dashboardRoute = require("./routes/dashboardRoute");
@@ -69,6 +70,6 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // start server
 app.listen(process.env.PORT, () => {
-    console.log(`Server started at ${process.env.URL}${process.env.PORT}`);
-    console.log(`Swagger Docs at ${process.env.URL}${process.env.PORT}/api-docs`);
+    console.log(`Server started at ${process.env.URL}${process.env.PORT}`.bgWhite.black);
+    console.log(`Swagger Docs at ${process.env.URL}${process.env.PORT}/api-docs`.bgWhite.black);
 });

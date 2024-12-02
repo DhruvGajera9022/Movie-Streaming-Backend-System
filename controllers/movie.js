@@ -1,5 +1,7 @@
 const Movies = require("../models/movie");
+const Category = require("../models/category");
 const fs = require('fs');
+const { Op } = require("sequelize");
 const dateHelper = require("../helpers/date_formator");
 
 
@@ -7,18 +9,36 @@ const dateHelper = require("../helpers/date_formator");
 const getMovies = async (req, res) => {
     let allMovies = await getAllMovies();
 
-    allMovies = allMovies.map(movie => {
-        return {
-            ...movie.dataValues,
-            formattedDate: dateHelper.formatDate(movie.release_date)
-        }
-    });
+    allMovies = await Promise.all(
+        allMovies.map(async (movie) => {
+            const genreIds = movie.genre_ids;
+            // console.log(genreIds);
+
+            const categories = await Promise.all(
+                genreIds.map(async (categoryId) => {
+                    const parsedCategoryId = parseInt(categoryId.replace(/"/g, ''));
+
+                    // Fetch the category based on the parsed ID
+                    const category = await Category.findOne({ where: { id: parsedCategoryId } });
+                    // console.log(category ? JSON.stringify(category.dataValues, null, 2) : 'No category found');
+                    return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
+                })
+            );
+
+            return {
+                ...movie.dataValues,
+                formattedDate: dateHelper.formatDate(movie.release_date),
+                categories,
+            };
+        })
+    );
 
     res.render("movie/movie", {
         title: "Movie",
         allMovies,
     });
-}
+};
+
 
 
 
@@ -170,7 +190,7 @@ const moviesAPI = async (req, res) => {
     try {
         let allMovies = await getAllMovies();
 
-        const baseURL = `${process.env.URL}${process.env.PORT}`
+        const baseURL = `${process.env.URL}${process.env.PORT}`;
 
         allMovies = allMovies.map((movie) => {
             return {

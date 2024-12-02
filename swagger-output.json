@@ -107,52 +107,6 @@
       }
     },
 
-    "/api/changePassword": {
-      "post": {
-        "tags": ["Authorization"],
-        "description": "Change the password for the authenticated user.",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "password": {
-                  "type": "string",
-                  "example": "password123",
-                  "description": "New password for the user."
-                },
-                "confirmPassword": {
-                  "type": "string",
-                  "example": "password123",
-                  "description": "Confirmation of the new password."
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Password changed successfully." },
-          "401": {
-            "description": "Unauthorized, token is invalid or missing.",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "accessDenied": {
-                    "summary": "Access denied error",
-                    "value": { "message": "Access denied. No token provided." }
-                  }
-                }
-              }
-            }
-          },
-          "400": { "description": "Validation error in input." }
-        }
-      }
-    },
-
     "/api/me": {
       "get": {
         "tags": ["User Profile"],
@@ -197,6 +151,52 @@
         "responses": {
           "200": { "description": "Profile updated successfully." },
           "401": { "description": "Unauthorized, token is invalid or missing." }
+        }
+      }
+    },
+
+    "/api/changePassword": {
+      "post": {
+        "tags": ["User Profile"],
+        "description": "Change the password for the authenticated user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "New password for the user."
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "password123",
+                  "description": "Confirmation of the new password."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Password changed successfully." },
+          "401": {
+            "description": "Unauthorized, token is invalid or missing.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "accessDenied": {
+                    "summary": "Access denied error",
+                    "value": { "message": "Access denied. No token provided." }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Validation error in input." }
         }
       }
     },

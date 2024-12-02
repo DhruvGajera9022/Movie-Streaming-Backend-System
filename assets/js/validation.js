@@ -12,6 +12,7 @@ $(document).ready(function () {
     let formAddress = $("#formAddress");
     let addSettings = $("#addSettings");
     let formAddDiscount = $("#formAddDiscount");
+    let formAddMovie = $("#formAddMovie");
 
     loginForm.validate({
         rules: {
@@ -409,4 +410,36 @@ $(document).ready(function () {
             },
         }
     });
+
+    formAddMovie.validate({
+        rules: {
+            title: {
+                required: true,
+            },
+            overview: {
+                required: true,
+            },
+            category: {
+                required: true,
+            },
+            original_language: {
+                required: true
+            },
+        },
+        messages: {
+            title: {
+                required: "Title is required",
+            },
+            overview: {
+                required: "Overview is required",
+            },
+            category: {
+                required: "Category is required",
+            },
+            original_language: {
+                required: "Original Language is required"
+            },
+        }
+    });
+
 });

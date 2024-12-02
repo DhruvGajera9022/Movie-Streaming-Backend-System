@@ -34,6 +34,11 @@ $(document).ready(function () {
         columnDefs: [{ orderable: false, targets: [0] }]
     });
 
+    $("#movietable").dataTable({
+        order: [],
+        columnDefs: [{ orderable: false, targets: [0, 6, 13] }]
+    });
+
 
     $("#privacy_policy").summernote({
         placeholder: "Write your content here",

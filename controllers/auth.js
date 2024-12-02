@@ -352,6 +352,16 @@ const loginAPI = async (req, res) => {
         });
     }
 
+    if (!user.isVerified) {
+        errorMsg.push({
+            msg: "User is not verified please verify your self.",
+        });
+        return res.json({
+            status: false,
+            message: errorMsg,
+        });
+    }
+
     // Compare provided password with hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
