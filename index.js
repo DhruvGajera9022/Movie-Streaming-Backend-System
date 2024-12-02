@@ -6,6 +6,7 @@ const FileStore = require("session-file-store")(session);
 const cors = require("cors");
 const morgan = require("morgan");
 const color = require("colors");
+const sgMail = require("@sendgrid/mail");
 
 const authRoute = require("./routes/authRoute");
 const dashboardRoute = require("./routes/dashboardRoute");
@@ -66,6 +67,10 @@ app.use("/", discountRoute);
 app.use("/", settingsRoute);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+
+// Send Grid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 // start server

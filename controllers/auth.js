@@ -7,7 +7,6 @@ require("../passport");
 const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 // To display login page
@@ -465,7 +464,9 @@ const registerAPI = async (req, res) => {
                     <a href="${verificationURL}">Verify Your Account</a>
                 `,
             };
-            await sgMail.send(msg);
+            await sgMail.send(msg)
+                .then(() => console.log("Mail Sent"))
+                .catch((err) => console.log("Error: ", err));
 
             // Respond to the client
             return res.status(201).json({

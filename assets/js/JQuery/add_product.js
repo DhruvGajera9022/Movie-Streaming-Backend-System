@@ -6,14 +6,20 @@
             type: 'GET',
             dataType: 'json',
             success: function (data) {
+                debugger
                 if (data && data.length > 0) {
-                    let categoryOptions = '<option value="">Select Category</option>';
                     const productCategory = '<%= (movie && movie.genre_ids) ? movie.genre_ids : "" %>';
+                    let categoryOptions = '';
+
+                    const selectedCategories = Array.isArray(productCategory) ? productCategory : [productCategory];
+
                     data.forEach(function (category) {
                         if (category.name) {
-                            const selected = `${category.id}` === productCategory ? 'selected' : '';
+                            const selected = selectedCategories.includes(category.id.toString()) ? 'selected' : '';
                             categoryOptions += `<option value="${category.id}" ${selected}>${category.name}</option>`;
                         }
+                        console.log('Selected Categories:', selectedCategories);
+
                     });
 
                     $('#category').html(categoryOptions);
