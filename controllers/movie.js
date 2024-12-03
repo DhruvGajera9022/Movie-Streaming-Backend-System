@@ -4,6 +4,7 @@ const fs = require('fs');
 const dateHelper = require("../helpers/date_formator");
 
 
+
 // To display movie page
 const getMovies = async (req, res) => {
     let allMovies = await getAllMovies();
@@ -36,7 +37,6 @@ const getMovies = async (req, res) => {
         allMovies,
     });
 };
-
 
 
 
@@ -226,6 +226,75 @@ const moviesAPI = async (req, res) => {
 
 
 
+// Home API - Contains categories and movies
+const homeAPI = async (req, res) => {
+    try {
+
+        let categories = await Category.findAll({
+            order: [['id', "DESC"]]
+        });
+        const baseURL = `${process.env.URL}${process.env.PORT}`;
+
+        if (!categories) {
+            res.json({
+                status: false,
+                message: "No category available",
+            });
+        }
+
+        // Process each category and associate movies
+        const categoryWithMovie = await Promise.all(categories.map(async (cat) => {
+            // Fetch movies for the current category
+            const movies = await getAllMovies();
+
+            const filteredMovies = movies.filter(movie =>
+                movie.genre_ids.includes(cat.id.toString())
+            );
+
+            if (filteredMovies.length === 0) {
+                return {
+                    ...cat.dataValues,
+                    details: "No movies available for this category"
+                };
+            }
+
+            const movieDetail = filteredMovies.map(movie => ({
+                id: movie.id,
+                title: movie.title,
+                overview: movie.overview,
+                adult: movie.adult,
+                backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
+                original_language: movie.original_language,
+                original_title: movie.original_title,
+                popularity: movie.popularity,
+                poster_path: `${baseURL}/img/movieImages/${movie.poster_path}`,
+                release_date: movie.release_date,
+                video: movie.video,
+                vote_average: movie.vote_average,
+                vote_count: movie.vote_count
+            }));
+
+            // Attach movie details to the category
+            cat.dataValues.movies = movieDetail;
+            return cat;
+        }));
+
+
+        res.json({
+            status: true,
+            category: categoryWithMovie
+        })
+
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in Home API"
+        })
+    }
+}
+
+
+
 // Fetch movies
 const getAllMovies = async (req, res) => {
     return await Movies.findAll({
@@ -243,4 +312,5 @@ module.exports = {
     deleteMovie,
 
     moviesAPI,
+    homeAPI,
 }

@@ -1,7 +1,7 @@
 const { sequelize } = require("../config/config");
 const { Sequelize, DataTypes } = require("sequelize");
 
-const Role = sequelize.define("movies", {
+const Movie = sequelize.define("movies", {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -58,4 +58,4 @@ const Role = sequelize.define("movies", {
     freezeTableName: true,
 });
 
-module.exports = Role
+module.exports = Movie
