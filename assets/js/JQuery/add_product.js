@@ -6,12 +6,11 @@
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                debugger
                 if (data && data.length > 0) {
                     const productCategory = '<%= (movie && movie.genre_ids) ? movie.genre_ids : "" %>';
                     let categoryOptions = '';
 
-                    const selectedCategories = Array.isArray(productCategory) ? productCategory : [productCategory];
+                    const selectedCategories = Array.isArray(productCategory) ? productCategory : productCategory.split(',');
 
                     data.forEach(function (category) {
                         if (category.name) {

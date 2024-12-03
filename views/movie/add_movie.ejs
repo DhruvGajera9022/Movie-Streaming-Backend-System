@@ -61,20 +61,29 @@
                                                                     <!-- Category - Overview -->
                                                                     <div class="form-group row">
                                                                         <label for="category"
-                                                                        class="col-sm-2 col-form-label">Category
-                                                                            <span
-                                                                                class="text-danger">*</span></label>
+                                                                            class="col-sm-2 col-form-label">Category
+                                                                            <span class="text-danger">*</span></label>
                                                                         <div class="col-sm-4">
                                                                             <select name="category" id="category"
-                                                                                class="form-control" style="height: 150px;" multiple>
+                                                                                class="form-control"
+                                                                                style="height: 150px;" multiple>
                                                                             </select>
                                                                         </div>
+
+                                                                        <script>
+                                                                            $(document).ready(function () {
+                                                                                $('#category').select2({
+                                                                                    placeholder: 'Select categories',
+                                                                                    allowClear: true,
+                                                                                    width: '100%',
+                                                                                });
+                                                                            });
+                                                                        </script>
 
                                                                         <!-- Overview -->
                                                                         <label for="overview"
                                                                             class="col-sm-2 col-form-label">Overview
-                                                                            <span
-                                                                                class="text-danger">*</span></label>
+                                                                            <span class="text-danger">*</span></label>
                                                                         <div class="col-sm-4">
                                                                             <textarea name="overview" id="overview"
                                                                                 class="form-control"
@@ -200,7 +209,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
+
 
                                                                     <!-- Poster -->
                                                                     <div class="form-group row">
