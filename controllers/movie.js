@@ -1,7 +1,6 @@
 const Movies = require("../models/movie");
 const Category = require("../models/category");
 const fs = require('fs');
-const { Op } = require("sequelize");
 const dateHelper = require("../helpers/date_formator");
 
 
@@ -87,6 +86,7 @@ const addOrEditMovie = async (req, res) => {
         // Use the uploaded file if present; otherwise, fallback to the old image
         let image = req.file ? req.file.filename : image_old;
 
+        // if new image is uploaded then old image is deleted
         if (req.file && image_old) {
             fs.unlink(`assets/img/movieImages/${image_old}`, (err) => {
                 if (err) {
@@ -99,38 +99,40 @@ const addOrEditMovie = async (req, res) => {
         adult = adult === "on";
         video = video === "on";
 
+        const genre_ids = Array.isArray(category)
+            ? category.join(",")
+            : category || null;
+
         if (id) {
-            // If an ID is provided, find the movie and update it
-            const movie = await Movies.findOne({ where: { id } });
+            // Update a movie
+            const isMovieUpdated = await Movies.update({
+                title,
+                overview,
+                genre_ids,
+                original_language,
+                original_title,
+                popularity,
+                release_date,
+                adult,
+                video,
+                vote_average,
+                vote_count,
+                poster_path: image,
+                backdrop_path: image
+            },
+                { where: { id: id } }
+            );
 
-            if (movie) {
-                // Update fields only if they are provided in the request
-                movie.title = title || movie.title;
-                movie.overview = overview || movie.overview;
-                movie.genre_ids = category || movie.genre_ids;
-                movie.original_language = original_language || movie.original_language;
-                movie.original_title = original_title || movie.original_title;
-                movie.popularity = popularity || movie.popularity;
-                movie.release_date = release_date || movie.release_date;
-                movie.adult = adult ?? movie.adult;
-                movie.video = video ?? movie.video;
-                movie.vote_average = vote_average || movie.vote_average;
-                movie.vote_count = vote_count || movie.vote_count;
-                movie.poster_path = image || movie.poster_path;
-                movie.backdrop_path = image || movie.backdrop_path;
-
-                // Save updated movie
-                await movie.save();
+            if (isMovieUpdated > 0) {
                 return res.redirect("/movie");
-            } else {
-                return res.status(404).send("Movie not found.");
             }
+
         } else {
-            // Create a new movie if no ID is provided
+            // Create a new movie
             const newMovie = await Movies.create({
                 title,
                 overview,
-                genre_ids: category.length > 0 ? category.join(',') : null,
+                genre_ids,
                 original_language,
                 original_title,
                 popularity,
