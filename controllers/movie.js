@@ -242,6 +242,8 @@ const homeAPI = async (req, res) => {
             });
         }
 
+        categories = categories.filter(category => category.isActive);
+
         // Process each category and associate movies
         const categoryWithMovie = await Promise.all(categories.map(async (cat) => {
             // Fetch movies for the current category
