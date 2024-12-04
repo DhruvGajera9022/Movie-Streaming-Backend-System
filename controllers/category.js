@@ -107,25 +107,6 @@ const getAllCategory = async () => {
 }
 
 
-// API category
-const categoriesAPI = async (req, res) => {
-    let categories = await getAllCategory();
-
-    categories = categories.filter(category => category.isActive);
-
-    categories = categories.map((category) => {
-        return {
-            id: category.id,
-            name: category.name,
-        }
-    });
-
-    return res.json({
-        status: true,
-        data: categories,
-    });
-}
-
 
 module.exports = {
     categories,
@@ -136,6 +117,4 @@ module.exports = {
     addOrEditCategory,
     deleteCategory,
     categoryValidationRules,
-
-    categoriesAPI,
 }

@@ -1,7 +1,10 @@
 const Movies = require("../models/movie");
 const Category = require("../models/category");
+
 const fs = require('fs');
+
 const dateHelper = require("../helpers/date_formator");
+const convertOverview = require('../helpers/html_decode');
 
 
 
@@ -12,6 +15,9 @@ const getMovies = async (req, res) => {
     allMovies = await Promise.all(
         allMovies.map(async (movie) => {
             const genreIds = movie.genre_ids;
+
+            // Convert the overview
+            const newOverview = await convertOverview(movie.overview);
 
             const categories = await Promise.all(
                 genreIds.map(async (categoryId) => {
@@ -27,6 +33,7 @@ const getMovies = async (req, res) => {
             return {
                 ...movie.dataValues,
                 formattedDate: dateHelper.formatDate(movie.release_date),
+                newOverview: newOverview,
                 categories,
             };
         })
@@ -186,46 +193,6 @@ const deleteMovie = async (req, res) => {
 
 
 
-// Movies API
-const moviesAPI = async (req, res) => {
-    try {
-        let allMovies = await getAllMovies();
-
-        const baseURL = `${process.env.URL}${process.env.PORT}`;
-
-        allMovies = allMovies.map((movie) => {
-            return {
-                id: movie.id,
-                title: movie.title,
-                overview: movie.overview,
-                adult: movie.adult,
-                backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
-                genre_ids: movie.genre_ids,
-                original_language: movie.original_language,
-                original_title: movie.original_title,
-                popularity: movie.popularity,
-                poster_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
-                release_date: movie.release_date,
-                video: movie.video,
-                vote_average: movie.vote_average,
-                vote_count: movie.vote_count,
-            }
-        })
-
-        res.json({
-            status: true,
-            movies: allMovies
-        })
-    } catch (error) {
-        res.json({
-            status: false,
-            message: "Error in Movies API"
-        })
-    }
-}
-
-
-
 // Home API - Contains categories and movies
 const homeAPI = async (req, res) => {
     try {
@@ -233,7 +200,6 @@ const homeAPI = async (req, res) => {
         let categories = await Category.findAll({
             order: [['id', "DESC"]]
         });
-        const baseURL = `${process.env.URL}${process.env.PORT}`;
 
         if (!categories) {
             res.json({
@@ -256,42 +222,109 @@ const homeAPI = async (req, res) => {
             if (filteredMovies.length === 0) {
                 return {
                     ...cat.dataValues,
-                    details: "No movies available for this category"
+                    movies: "No movies available for this category"
                 };
             }
 
-            const movieDetail = filteredMovies.map(movie => ({
-                id: movie.id,
-                title: movie.title,
-                overview: movie.overview,
-                adult: movie.adult,
-                backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
-                original_language: movie.original_language,
-                original_title: movie.original_title,
-                popularity: movie.popularity,
-                poster_path: `${baseURL}/img/movieImages/${movie.poster_path}`,
-                release_date: movie.release_date,
-                video: movie.video,
-                vote_average: movie.vote_average,
-                vote_count: movie.vote_count
-            }));
+            const movieDetail = await Promise.all(
+                filteredMovies.map(async (movie) => {
+                    const movies = await movieData(movie);
+                    return movies;
+                })
+            );
 
             // Attach movie details to the category
             cat.dataValues.movies = movieDetail;
             return cat;
+
         }));
+
+
+        const movies = await getAllMovies();
+
+        const topPics = [];
+        const upcomingMovies = [];
+        const blockbuster = [];
+
+
+        // Add top pics movies to the collection
+        topPics.push(
+            ...movies.filter(movies => movies.vote_average > 7.5)
+        );
+
+        const transformedTopPics = await Promise.all(
+            topPics.map(async (movie) => {
+                const topMovies = await movieData(movie);
+                return topMovies;
+            })
+        );
+
+
+        // Add upcoming movies to the collection
+        upcomingMovies.push(
+            ...movies.filter(movie => new Date(movie.release_date) > new Date())
+        );
+
+        const transformedMovies = await Promise.all(
+            upcomingMovies.map(async (movie) => {
+                const upcomingMovies = await movieData(movie);
+                return upcomingMovies;
+            })
+        );
+
+
+        // Add blockbuster movies to the collection
+        blockbuster.push(
+            ...movies.filter(movie => movie.popularity > 100)
+        );
+
+        const transformedBlockbuster = await Promise.all(
+            blockbuster.map(async (movie) => {
+                const blockbusterMovies = await movieData(movie);
+                return blockbusterMovies;
+            })
+        );
 
 
         res.json({
             status: true,
-            category: categoryWithMovie
-        })
+            category: {
+                topPicsForYou: transformedTopPics,
+                upcomingMovies: transformedMovies,
+                blockbuster: transformedBlockbuster,
+                categoryWithMovie
+            }
+        });
 
     } catch (error) {
         res.json({
             status: false,
             message: "Error in Home API"
-        })
+        });
+    }
+}
+
+
+
+// For formate the response data
+const movieData = async (movie) => {
+
+    const baseURL = `${process.env.URL}${process.env.PORT}`;
+
+    return {
+        id: movie.id,
+        title: movie.title,
+        overview: await convertOverview(movie.overview),
+        // adult: movie.adult,
+        backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
+        original_language: movie.original_language,
+        // original_title: movie.original_title,
+        // popularity: movie.popularity,
+        // poster_path: `${baseURL}/img/movieImages/${movie.poster_path}`,
+        release_date: movie.release_date,
+        // video: movie.video,
+        vote_average: movie.vote_average,
+        vote_count: movie.vote_count,
     }
 }
 
@@ -313,6 +346,5 @@ module.exports = {
     addOrEditMovie,
     deleteMovie,
 
-    moviesAPI,
     homeAPI,
 }

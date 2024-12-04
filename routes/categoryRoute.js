@@ -18,8 +18,6 @@ router.get("/add_category/:id?", Middleware.authenticate, Middleware.isAdmin, ca
 router.post("/add_category", categoryController.categoryValidationRules, categoryController.addOrEditCategory);
 router.post("/add_category/delete/:id", categoryController.deleteCategory);
 
-// API
-router.get("/api/category", categoryController.categoriesAPI);
 
 
 module.exports = router;

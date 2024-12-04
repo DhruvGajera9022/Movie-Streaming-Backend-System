@@ -351,15 +351,15 @@ const loginAPI = async (req, res) => {
         });
     }
 
-    if (!user.isVerified) {
-        errorMsg.push({
-            msg: "User is not verified please verify your self.",
-        });
-        return res.json({
-            status: false,
-            message: errorMsg,
-        });
-    }
+    // if (!user.isVerified) {
+    //     errorMsg.push({
+    //         msg: "User is not verified please verify your self.",
+    //     });
+    //     return res.json({
+    //         status: false,
+    //         message: errorMsg,
+    //     });
+    // }
 
     // Compare provided password with hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -447,32 +447,32 @@ const registerAPI = async (req, res) => {
                 isVerified: false,
             });
 
-            // Send verification email
-            const verificationURL = `${process.env.URL}${process.env.PORT}/verify-email?emailToken=${emailToken}`;
-            const msg = {
-                from: {
-                    name: "Netflix-Project",
-                    email: "dhruvgajera05@gmail.com",
-                },
-                to: email,
-                subject: "Netflix-Project - Verify Your Email",
-                text: `Hello, thanks for registering on our site. Please verify your account: ${verificationURL}`,
-                html: `
-                    <h1>Hello,</h1>
-                    <p>Thanks for registering on our site.</p>
-                    <p>Please click the link below to verify your account:</p>
-                    <a href="${verificationURL}">Verify Your Account</a>
-                `,
-            };
-            await sgMail.send(msg)
-                .then(() => console.log("Mail Sent"))
-                .catch((err) => console.log("Error: ", err));
+            // // Send verification email
+            // const verificationURL = `${process.env.URL}${process.env.PORT}/verify-email?emailToken=${emailToken}`;
+            // const msg = {
+            //     from: {
+            //         name: "Netflix-Project",
+            //         email: "dhruvgajera05@gmail.com",
+            //     },
+            //     to: email,
+            //     subject: "Netflix-Project - Verify Your Email",
+            //     text: `Hello, thanks for registering on our site. Please verify your account: ${verificationURL}`,
+            //     html: `
+            //         <h1>Hello,</h1>
+            //         <p>Thanks for registering on our site.</p>
+            //         <p>Please click the link below to verify your account:</p>
+            //         <a href="${verificationURL}">Verify Your Account</a>
+            //     `,
+            // };
+            // await sgMail.send(msg)
+            //     .then(() => console.log("Mail Sent"))
+            //     .catch((err) => console.log("Error: ", err));
 
-            // Respond to the client
-            return res.status(201).json({
-                status: true,
-                message: "Thanks for registering. Please check your email to verify your account.",
-            });
+            // // Respond to the client
+            // return res.status(201).json({
+            //     status: true,
+            //     message: "Thanks for registering. Please check your email to verify your account.",
+            // });
         }
 
         return res.json({

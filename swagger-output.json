@@ -201,32 +201,6 @@
       }
     },
 
-    "/api/category": {
-      "get": {
-        "tags": ["Movies Management"],
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Categories details retrieved successfully."
-          },
-          "401": { "description": "Categories not found." }
-        }
-      }
-    },
-
-    "/api/movies": {
-      "get": {
-        "tags": ["Movies Management"],
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Movies details retrieved successfully."
-          },
-          "401": { "description": "Movies not found." }
-        }
-      }
-    },
-
     "/api/home": {
       "get": {
         "tags": ["Movies Management"],

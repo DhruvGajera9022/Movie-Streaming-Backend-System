@@ -19,7 +19,6 @@ router.post("/add_movie/delete/:id", imageHelper.uploadMovieImages, movieControl
 
 
 // APIs
-router.get("/api/movies", movieController.moviesAPI);
 router.get("/api/home", movieController.homeAPI);
 
 
