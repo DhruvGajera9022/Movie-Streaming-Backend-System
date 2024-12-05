@@ -1,0 +1,222 @@
+<%- include("../includes/header.ejs") %> <%- include("../includes/sidebar.ejs") %>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <!-- Main content -->
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="card card-primary">
+                                                <% if(topImage){ %>
+                                                    <div class="card-header bg-success">
+                                                        <h3 class="text-light">Edit Top Image</h3>
+                                                    </div>
+                                                    <% }else{ %>
+                                                        <div class="card-header bg-primary">
+                                                            <h3 class="text-light">Add Top Image</h3>
+                                                        </div>
+                                                        <% } %>
+                                                            <form action="/add_topImages" method="post" id="formAddTopImage"
+                                                                enctype="multipart/form-data">
+                                                                <div class="card-body">
+                                                                    <input type="hidden" name="id"
+                                                                        value="<%= topImage ? topImage.id : '' %>" />
+
+
+                                                                    <!-- Title -->
+                                                                    <div class="form-group row">
+                                                                        <label for="title"
+                                                                            class="col-sm-2 col-form-label">Title <span
+                                                                                class="text-danger">*</span>
+                                                                        </label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" class="form-control"
+                                                                                id="title" name="title"
+                                                                                placeholder="Enter Title"
+                                                                                value="<%= topImage ? topImage.title : '' %>" />
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Category - Overview -->
+                                                                    <div class="form-group row">
+                                                                        <label for="category"
+                                                                            class="col-sm-2 col-form-label">Category
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <div class="col-sm-4">
+                                                                            <select name="category" id="category"
+                                                                                class="form-control"
+                                                                                style="height: 150px;" multiple>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <script>
+                                                                            $(document).ready(function () {
+                                                                                $('#category').select2({
+                                                                                    placeholder: 'Select categories',
+                                                                                    allowClear: true,
+                                                                                    width: '100%',
+                                                                                });
+                                                                            });
+                                                                        </script>
+
+                                                                        <!-- Overview -->
+                                                                        <label for="description"
+                                                                            class="col-sm-2 col-form-label">Description
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <div class="col-sm-4">
+                                                                            <textarea name="description" id="description"
+                                                                                class="form-control"
+                                                                                placeholder="Enter Description"><%= topImage ? topImage.description : '' %></textarea>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Original Language - Release Date -->
+                                                                    <div class="row">
+                                                                        <!-- Original Language -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <label for="original_language"
+                                                                                    class="col-sm-4 col-form-label">
+                                                                                    Language <span
+                                                                                        class="text-danger">*</span></label>
+                                                                                <div class="col-sm-8">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        id="language"
+                                                                                        name="language"
+                                                                                        placeholder="Enter Language"
+                                                                                        value="<%= topImage ? topImage.	language : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Release Date -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <label for="release_date"
+                                                                                    class="col-sm-4 col-form-label">Release
+                                                                                    Date</label>
+                                                                                <div class="col-sm-8">
+                                                                                    <input type="date"
+                                                                                        class="form-control"
+                                                                                        id="release_date"
+                                                                                        name="release_date"
+                                                                                        value="<%= topImage ? topImage.release_date : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Release Date -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <label for="duration"
+                                                                                    class="col-sm-4 col-form-label">Duration</label>
+                                                                                <div class="col-sm-8">
+                                                                                    <input type="time"
+                                                                                        class="form-control"
+                                                                                        id="duration"
+                                                                                        name="duration"
+                                                                                        value="<%= topImage ? topImage.duration : '' %>" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    
+                                                                    <div class="row">
+                                                                        <!-- Play Checkbox -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="isPlay">
+                                                                                        <input type="checkbox"
+                                                                                            name="isPlay" id="isPlay" <%
+                                                                                            if(topImage && topImage.isPlay==1){
+                                                                                            %> checked <% } %>> Play
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- More Info Checkbox -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="isMore">
+                                                                                        <input type="checkbox"
+                                                                                            name="isMore" id="isMore" <%
+                                                                                            if(topImage && topImage.isMoreInfo==1){
+                                                                                            %> checked <% } %>> More Info
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Image Checkbox -->
+                                                                        <div class="col-sm-4">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="isImage">
+                                                                                        <input type="checkbox"
+                                                                                            name="isImage" id="isImage" <%
+                                                                                            if(topImage && topImage.isImage==1){
+                                                                                            %> checked <% } %>> Image
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Image-->
+                                                                    <div class="form-group row">
+                                                                        <label for="image"
+                                                                            class="col-sm-2 col-form-label">Image</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="file" name="image" id="image"
+                                                                                class="form-control"><br>
+                                                                            <% if(topImage && topImage.image){ %>
+                                                                                <img src="/img/topImages/<%= topImage.image %>"
+                                                                                    alt="Category Image" width="70px"
+                                                                                    height="70px">
+                                                                                <input type="hidden" name="image_old"
+                                                                                    value="<%= topImage.image %>" />
+                                                                                <% } %>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!-- Submit Button -->
+                                                                    <div class="card-footer">
+                                                                        <button type="submit" name="add"
+                                                                            class="btn btn-<% if(topImage){ %>success<% }else{ %>primary<% } %>">
+                                                                            <% if(topImage){ %> Edit <% }else{ %> Add <% }
+                                                                                        %>
+                                                                        </button>
+                                                                    </div>
+                                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+        </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
+
+        <%- include("../includes/footer.ejs") %>
+            <%- include("../../assets/js/JQuery/add_top_image.js") %>

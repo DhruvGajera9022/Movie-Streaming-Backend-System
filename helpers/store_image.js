@@ -76,6 +76,21 @@ const uploadMovieImages = multer({
 
 
 
+// Image upload setup for movie 
+let storageForTopImage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "assets/img/topImages/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname);
+    },
+});
+const uploadTopImages = multer({
+    storage: storageForTopImage,
+}).single("image"); // Single file upload for image
+
+
+
 
 module.exports = {
     uploadUserImage,
@@ -83,4 +98,5 @@ module.exports = {
     uploadSettingImages,
     uploadDiscountImages,
     uploadMovieImages,
+    uploadTopImages,
 }

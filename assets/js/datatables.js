@@ -39,6 +39,11 @@ $(document).ready(function () {
         columnDefs: [{ orderable: false, targets: [0, 6, 13] }]
     });
 
+    $("#topIMagesTable").dataTable({
+        order: [],
+        columnDefs: [{ orderable: false, targets: [0, 10] }]
+    });
+
 
     $("#privacy_policy").summernote({
         placeholder: "Write your content here",
@@ -69,6 +74,20 @@ $(document).ready(function () {
     });
 
     $("#overview").summernote({
+        placeholder: "Write your content here",
+        height: 70,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+
+    $("#description").summernote({
         placeholder: "Write your content here",
         height: 70,
         toolbar: [

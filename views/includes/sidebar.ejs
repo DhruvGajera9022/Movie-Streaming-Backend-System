@@ -61,6 +61,14 @@
           </a>
         </li>
 
+        <!-- Movie (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/topImages" class="nav-link <%= ["Top Images", "Add Top Image" , "Edit Top Image" ].includes(title) ? "active" : "" %>">
+            <i class="nav-icon fas fa-image"></i>
+            <p>Top Images</p>
+          </a>
+        </li>
+
         <!-- Discount (Initially hidden) -->
         <li class="nav-item admin-only" style="display:none;">
           <a href="/discount" class="nav-link <%= ["Discount", "Add Discount" , "Edit Discount" ].includes(title)

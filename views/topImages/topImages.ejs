@@ -1,0 +1,107 @@
+<%- include("../includes/header.ejs") %>
+  <%- include("../includes/sidebar.ejs") %>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Roles</h1>
+            </div>
+          </div>
+
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-row-reverse mb-3">
+                        <a href="/add_topImages" class="btn btn-primary">Add</a>
+                      </div>
+                      <div class="table-responsive-sm">
+                        <table id="topIMagesTable" class="table table-dark table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                              <th>Image</th>
+                              <th>Title</th>
+                              <th>Description</th>
+                              <th>Category</th>
+                              <th>Language</th>
+                              <th>Release Date</th>
+                              <th>Duration</th>
+                              <th>Play</th>
+                              <th>More</th>
+                              <th>Picture</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% allTopImages.forEach(data=> { %>
+                              <tr>
+                                <td>
+                                  <img src="img/topImages/<%= data.image %>" height="40" width="40">
+                                </td>
+                                <td>
+                                  <%= data.title %>
+                                </td>
+                                <td>
+                                  <%= data.newDescription.length > 50 ? data.newDescription.slice(0, 50) + '...' : data.newDescription %>
+                                </td>
+                                <td>
+                                  <%= data.categories %>
+                                </td>
+                                <td>
+                                  <%= data.language %>
+                                </td>
+                                <td>
+                                  <%= data.formattedDate %>
+                                </td>
+                                <td>
+                                  <%= data.duration %>
+                                </td>
+                                <td>
+                                  <%= data.isPlay %>
+                                </td>
+                                <td>
+                                  <%= data.isMoreInfo %>
+                                </td>
+                                <td>
+                                  <%= data.isImage %>
+                                </td>
+
+                                <td>
+                                  <a href="/add_topImages/<%= data.id %>" class="text-success">
+                                    <i class="fas fa-edit fa-lg mx-1"></i>
+                                  </a>
+                                  <form action="/add_topImages/delete/<%= data.id %>" method="POST" style="display: inline" onsubmit="return confirm('Are you sure?')">
+                                    <button type="submit" style="background: none; border: none; cursor: pointer">
+                                      <i class="fas fa-trash fa-lg mx-1" style="color: red"></i>
+                                    </button>
+                                  </form>
+                                </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+    </div>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
+
+    <%- include("../includes/footer.ejs") %>
+      </body>
+
+      </html>

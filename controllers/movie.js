@@ -15,6 +15,7 @@ const getMovies = async (req, res) => {
     allMovies = await Promise.all(
         allMovies.map(async (movie) => {
             const genreIds = movie.genre_ids;
+            console.log(genreIds);
 
             // Convert the overview
             const newOverview = await convertOverview(movie.overview);
@@ -25,8 +26,8 @@ const getMovies = async (req, res) => {
 
                     // Fetch the category based on the parsed ID
                     const category = await Category.findOne({ where: { id: parsedCategoryId } });
-                    // console.log(category ? JSON.stringify(category.dataValues, null, 2) : 'No category found');
-                    return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
+                    // return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
+                    return category.name;
                 })
             );
 

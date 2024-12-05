@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       genre_ids: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
       },
       original_language: {
         type: Sequelize.STRING,

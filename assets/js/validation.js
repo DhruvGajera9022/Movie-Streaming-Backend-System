@@ -13,6 +13,7 @@ $(document).ready(function () {
     let addSettings = $("#addSettings");
     let formAddDiscount = $("#formAddDiscount");
     let formAddMovie = $("#formAddMovie");
+    let formAddTopImage = $("#formAddTopImage");
 
     loginForm.validate({
         rules: {
@@ -438,6 +439,37 @@ $(document).ready(function () {
             },
             original_language: {
                 required: "Original Language is required"
+            },
+        }
+    });
+
+    formAddTopImage.validate({
+        rules: {
+            title: {
+                required: true,
+            },
+            description: {
+                required: true,
+            },
+            category: {
+                required: true,
+            },
+            language: {
+                required: true
+            },
+        },
+        messages: {
+            title: {
+                required: "Title is required",
+            },
+            description: {
+                required: "Description is required",
+            },
+            category: {
+                required: "Category is required",
+            },
+            language: {
+                required: "Language is required"
             },
         }
     });
