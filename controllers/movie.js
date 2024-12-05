@@ -311,7 +311,7 @@ const homeAPI = async (req, res) => {
                 topPicsObj.isActive == true ? topPicsObj : '',
                 upcomingMoviesObj.isActive == true ? upcomingMoviesObj : '',
                 blockbusterMoviesObj.isActive == true ? blockbusterMoviesObj : '',
-                categoryWithMovie
+                ...categoryWithMovie
             ]
         });
 

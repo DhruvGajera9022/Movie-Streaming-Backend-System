@@ -163,7 +163,7 @@ const addOrEditTopImage = async (req, res) => {
         console.error("Error in addOrEditTopImages:", error);
     }
 }
-
+// To delete top image
 const deleteTopImage = async (req, res) => {
     try {
         const id = req.params.id;
@@ -198,9 +198,65 @@ const deleteTopImage = async (req, res) => {
 }
 
 
+// Top Images API
+const topImagesAPI = async (req, res) => {
+    try {
+        let topImages = await getAllSliderImages();
+        const baseURL = `${process.env.URL}${process.env.PORT}`;
+
+        if (!topImages) {
+            res.json({
+                status: false,
+                message: "No data found",
+            });
+        }
+
+        topImages = await Promise.all(
+            topImages = topImages.map(async (top) => {
+                let categoryId = top.category;
+                // Convert the overview
+                const newDescription = await convertOverview(top.description);
+
+                const categories = await Promise.all(
+                    categoryId.map(async (id) => {
+                        const parsedCategoryId = parseInt(id.replace(/"/g, ''));
+
+                        // Fetch the category based on the parsed ID
+                        const category = await Category.findOne({ where: { id: parsedCategoryId } });
+                        return category.name;
+                    })
+                );
+
+                return {
+                    title: top.title,
+                    description: newDescription,
+                    category: categories,
+                    language: top.language,
+                    release_date: dateHelper.formatDate(top.release_date),
+                    duration: top.duration,
+                    isPlay: top.isPlay,
+                    isMoreInfo: top.isMoreInfo,
+                    isImage: top.isImage,
+                    image: `${baseURL}/img/topImages/${top.image}`
+                }
+            })
+        )
+
+        res.json({
+            status: true,
+            data: topImages,
+        });
+
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in Top Images API",
+        });
+    }
+}
 
 
-
+// Get all data
 const getAllSliderImages = async () => {
     return await SliderImages.findAll({
         order: [['id', "DESC"]]
@@ -215,6 +271,8 @@ module.exports = {
     displayTopImagesPage,
     addOrEditTopImage,
     deleteTopImage,
+
+    topImagesAPI,
 }
 
 

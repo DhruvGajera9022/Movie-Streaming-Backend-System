@@ -214,6 +214,19 @@
       }
     },
 
+    "/api/topImages": {
+      "get": {
+        "tags": ["Movies Management"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "All Top Images details retrieved successfully."
+          },
+          "401": { "description": "Data not found." }
+        }
+      }
+    },
+
     "/api/address": {
       "get": {
         "tags": ["Addresses"],

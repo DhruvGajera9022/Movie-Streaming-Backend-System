@@ -16,7 +16,8 @@ router.post("/add_topImages", imageHelper.uploadTopImages, topImagesController.a
 router.post("/add_topImages/delete/:id", imageHelper.uploadTopImages, topImagesController.deleteTopImage);
 
 
-
+// API
+router.get("/api/topImages", topImagesController.topImagesAPI);
 
 
 
