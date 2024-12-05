@@ -223,7 +223,7 @@ const homeAPI = async (req, res) => {
             if (filteredMovies.length === 0) {
                 return {
                     ...cat.dataValues,
-                    movies: "No movies available for this category"
+                    movies: []
                 };
             }
 
