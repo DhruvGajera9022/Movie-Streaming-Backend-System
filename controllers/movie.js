@@ -260,6 +260,12 @@ const homeAPI = async (req, res) => {
             })
         );
 
+        let topPicsObj = {
+            title: "Top Pics For You",
+            isActive: true,
+            movies: transformedTopPics,
+        }
+
 
         // Add upcoming movies to the collection
         upcomingMovies.push(
@@ -272,6 +278,12 @@ const homeAPI = async (req, res) => {
                 return upcomingMovies;
             })
         );
+
+        const upcomingMoviesObj = {
+            title: "Upcoming Movie",
+            isActive: true,
+            movies: transformedMovies
+        }
 
 
         // Add blockbuster movies to the collection
@@ -286,15 +298,21 @@ const homeAPI = async (req, res) => {
             })
         );
 
+        const blockbusterMoviesObj = {
+            title: "Blockbuster Movie",
+            isActive: true,
+            movies: transformedBlockbuster
+        }
+
 
         res.json({
             status: true,
-            category: {
-                topPicsForYou: transformedTopPics,
-                upcomingMovies: transformedMovies,
-                blockbuster: transformedBlockbuster,
+            data: [
+                topPicsObj.isActive == true ? topPicsObj : '',
+                upcomingMoviesObj.isActive == true ? upcomingMoviesObj : '',
+                blockbusterMoviesObj.isActive == true ? blockbusterMoviesObj : '',
                 categoryWithMovie
-            }
+            ]
         });
 
     } catch (error) {
