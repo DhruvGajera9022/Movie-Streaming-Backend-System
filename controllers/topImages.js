@@ -12,7 +12,7 @@ const topImages = async (req, res) => {
         let allTopImages = await getAllSliderImages();
 
         allTopImages = await Promise.all(
-            allTopImages = allTopImages.map(async (topImage) => {
+            allTopImages.map(async (topImage) => {
                 const categoryId = topImage.category;
 
                 // Convert the overview
@@ -215,36 +215,36 @@ const topImagesAPI = async (req, res) => {
             });
         }
 
-        topImages = topImages.filter(top => top.isActive);
+        topImages = await Promise.all(
+            topImages = topImages.map(async (top) => {
+                let categoryId = top.category;
+                // Convert the overview
+                const newDescription = await convertOverview(top.description);
 
-        topImages.map(async (top) => {
-            let categoryId = top.category;
-            // Convert the overview
-            const newDescription = await convertOverview(top.description);
+                const categories = await Promise.all(
+                    categoryId.map(async (id) => {
+                        const parsedCategoryId = parseInt(id.replace(/"/g, ''));
 
-            // const categories = await Promise.all(
-            categoryId = categoryId.map(async (id) => {
-                const parsedCategoryId = parseInt(id.replace(/"/g, ''));
+                        // Fetch the category based on the parsed ID
+                        const category = await Category.findOne({ where: { id: parsedCategoryId } });
+                        return category.name;
+                    })
+                );
 
-                // Fetch the category based on the parsed ID
-                const category = await Category.findOne({ where: { id: parsedCategoryId } });
-                return category.name;
-            });
-            // );
-
-            return {
-                title: top.title,
-                description: newDescription,
-                category: categoryId,
-                language: top.language,
-                release_date: dateHelper.formatDate(top.release_date),
-                duration: top.duration,
-                isPlay: top.isPlay,
-                isMoreInfo: top.isMoreInfo,
-                isImage: top.isImage,
-                image: `${baseURL}/img/topImages/${top.image}`
-            }
-        })
+                return {
+                    title: top.title,
+                    description: newDescription,
+                    category: categories,
+                    language: top.language,
+                    release_date: dateHelper.formatDate(top.release_date),
+                    duration: top.duration,
+                    isPlay: top.isPlay,
+                    isMoreInfo: top.isMoreInfo,
+                    isImage: top.isImage,
+                    image: `${baseURL}/img/topImages/${top.image}`
+                }
+            })
+        )
 
         res.json({
             status: true,
