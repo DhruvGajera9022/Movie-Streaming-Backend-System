@@ -17,7 +17,6 @@
                             const selected = selectedCategories.includes(category.id.toString()) ? 'selected' : '';
                             categoryOptions += `<option value="${category.id}" ${selected}>${category.name}</option>`;
                         }
-                        console.log('Selected Categories:', selectedCategories);
 
                     });
 

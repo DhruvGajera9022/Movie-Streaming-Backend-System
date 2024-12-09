@@ -8,7 +8,6 @@ const convertOverview = require('../helpers/html_decode');
 
 
 
-// To display movie page
 const getMovies = async (req, res) => {
     let allMovies = await getAllMovies();
 
@@ -26,8 +25,13 @@ const getMovies = async (req, res) => {
 
                     // Fetch the category based on the parsed ID
                     const category = await Category.findOne({ where: { id: parsedCategoryId } });
-                    // return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
-                    return category.dataValues.name;
+
+                    // Check if category exists
+                    if (category) {
+                        return category.dataValues.name;
+                    } else {
+                        return 'No category found';
+                    }
                 })
             );
 
@@ -45,6 +49,7 @@ const getMovies = async (req, res) => {
         allMovies,
     });
 };
+
 
 
 

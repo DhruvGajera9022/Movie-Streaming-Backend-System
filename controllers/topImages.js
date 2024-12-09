@@ -24,10 +24,9 @@ const topImages = async (req, res) => {
 
                         // Fetch the category based on the parsed ID
                         const category = await Category.findOne({ where: { id: parsedCategoryId } });
-                        // console.log(category.name);
                         // return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
                         return category.name;
-                    })
+                    }),
                 );
 
                 return {
@@ -48,7 +47,6 @@ const topImages = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
-
 
 
 
@@ -216,7 +214,7 @@ const topImagesAPI = async (req, res) => {
         }
 
         topImages = await Promise.all(
-            topImages = topImages.map(async (top) => {
+            topImages.map(async (top) => {
                 let categoryId = top.category;
                 // Convert the overview
                 const newDescription = await convertOverview(top.description);

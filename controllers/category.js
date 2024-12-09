@@ -94,7 +94,10 @@ const categoryValidationRules = [
 
 // To display all category in product form into dropdown
 const getCategory = async (req, res) => {
-    const categories = await getAllCategory();
+    let categories = await getAllCategory();
+
+    categories = categories.filter(cat => cat.isActive);
+
     res.json(categories);
 };
 
