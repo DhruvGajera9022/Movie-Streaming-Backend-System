@@ -21,6 +21,10 @@ module.exports = {
       },
       category: {
         type: Sequelize.STRING,
+        get() {
+          const value = this.getDataValue('category');
+          return value ? value.split(',') : [];
+        },
       },
       release_date: {
         type: Sequelize.STRING,
@@ -35,6 +39,9 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       isImage: {
+        type: Sequelize.BOOLEAN,
+      },
+      isActive: {
         type: Sequelize.BOOLEAN,
       },
       image: {

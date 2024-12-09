@@ -12,7 +12,7 @@ const topImages = async (req, res) => {
         let allTopImages = await getAllSliderImages();
 
         allTopImages = await Promise.all(
-            allTopImages.map(async (topImage) => {
+            allTopImages = allTopImages.map(async (topImage) => {
                 const categoryId = topImage.category;
 
                 // Convert the overview
@@ -93,6 +93,7 @@ const addOrEditTopImage = async (req, res) => {
             isPlay,
             isMore,
             isImage,
+            isActive,
             image_old
         } = req.body;
 
@@ -112,6 +113,7 @@ const addOrEditTopImage = async (req, res) => {
         isPlay = isPlay === "on";
         isMore = isMore === "on";
         isImage = isImage === "on";
+        isActive = isActive === "on";
 
         const categoryIds = Array.isArray(category) ? category.join(",") : category || null;
 
@@ -126,6 +128,7 @@ const addOrEditTopImage = async (req, res) => {
                 duration,
                 isPlay,
                 isMoreInfo: isMore,
+                isActive,
                 isImage,
                 image
             }, {
@@ -148,6 +151,7 @@ const addOrEditTopImage = async (req, res) => {
                 duration,
                 isPlay,
                 isMoreInfo: isMore,
+                isActive,
                 isImage,
                 image
             });
@@ -211,36 +215,36 @@ const topImagesAPI = async (req, res) => {
             });
         }
 
-        topImages = await Promise.all(
-            topImages = topImages.map(async (top) => {
-                let categoryId = top.category;
-                // Convert the overview
-                const newDescription = await convertOverview(top.description);
+        topImages = topImages.filter(top => top.isActive);
 
-                const categories = await Promise.all(
-                    categoryId.map(async (id) => {
-                        const parsedCategoryId = parseInt(id.replace(/"/g, ''));
+        topImages.map(async (top) => {
+            let categoryId = top.category;
+            // Convert the overview
+            const newDescription = await convertOverview(top.description);
 
-                        // Fetch the category based on the parsed ID
-                        const category = await Category.findOne({ where: { id: parsedCategoryId } });
-                        return category.name;
-                    })
-                );
+            // const categories = await Promise.all(
+            categoryId = categoryId.map(async (id) => {
+                const parsedCategoryId = parseInt(id.replace(/"/g, ''));
 
-                return {
-                    title: top.title,
-                    description: newDescription,
-                    category: categories,
-                    language: top.language,
-                    release_date: dateHelper.formatDate(top.release_date),
-                    duration: top.duration,
-                    isPlay: top.isPlay,
-                    isMoreInfo: top.isMoreInfo,
-                    isImage: top.isImage,
-                    image: `${baseURL}/img/topImages/${top.image}`
-                }
-            })
-        )
+                // Fetch the category based on the parsed ID
+                const category = await Category.findOne({ where: { id: parsedCategoryId } });
+                return category.name;
+            });
+            // );
+
+            return {
+                title: top.title,
+                description: newDescription,
+                category: categoryId,
+                language: top.language,
+                release_date: dateHelper.formatDate(top.release_date),
+                duration: top.duration,
+                isPlay: top.isPlay,
+                isMoreInfo: top.isMoreInfo,
+                isImage: top.isImage,
+                image: `${baseURL}/img/topImages/${top.image}`
+            }
+        })
 
         res.json({
             status: true,

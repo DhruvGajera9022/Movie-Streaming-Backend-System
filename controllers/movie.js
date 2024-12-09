@@ -27,7 +27,7 @@ const getMovies = async (req, res) => {
                     // Fetch the category based on the parsed ID
                     const category = await Category.findOne({ where: { id: parsedCategoryId } });
                     // return category ? JSON.stringify(category.dataValues.name, null, 2) : 'No';
-                    return category.name;
+                    return category.dataValues.name;
                 })
             );
 

@@ -39,6 +39,9 @@ const SliderImages = sequelize.define("sliderImages", {
     isImage: {
         type: Sequelize.BOOLEAN,
     },
+    isActive: {
+        type: Sequelize.BOOLEAN,
+    },
     image: {
         type: Sequelize.STRING,
     },

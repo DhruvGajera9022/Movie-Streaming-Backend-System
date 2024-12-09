@@ -132,8 +132,23 @@
 
                                                                     
                                                                     <div class="row">
+
+                                                                        <!-- Is Active -->
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-sm-12">
+                                                                                    <label for="isActive">
+                                                                                        <input type="checkbox"
+                                                                                            name="isActive" id="isActive" <%
+                                                                                            if(topImage && topImage.isActive==1){
+                                                                                            %> checked <% } %>> Active
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
                                                                         <!-- Play Checkbox -->
-                                                                        <div class="col-sm-4">
+                                                                        <div class="col-sm-3">
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-12">
                                                                                     <label for="isPlay">
@@ -147,7 +162,7 @@
                                                                         </div>
 
                                                                         <!-- More Info Checkbox -->
-                                                                        <div class="col-sm-4">
+                                                                        <div class="col-sm-3">
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-12">
                                                                                     <label for="isMore">
@@ -161,7 +176,7 @@
                                                                         </div>
 
                                                                         <!-- Image Checkbox -->
-                                                                        <div class="col-sm-4">
+                                                                        <div class="col-sm-3">
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-12">
                                                                                     <label for="isImage">

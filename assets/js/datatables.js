@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     $("#topIMagesTable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 10] }]
+        columnDefs: [{ orderable: false, targets: [0, 11] }]
     });
 
 
