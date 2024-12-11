@@ -14,6 +14,7 @@ $(document).ready(function () {
     let formAddDiscount = $("#formAddDiscount");
     let formAddMovie = $("#formAddMovie");
     let formAddTopImage = $("#formAddTopImage");
+    let formAddSubscription = $("#formAddSubscription");
 
     loginForm.validate({
         rules: {
@@ -472,6 +473,49 @@ $(document).ready(function () {
                 required: "Language is required"
             },
         }
+    });
+
+    formAddSubscription.validate({
+        rules: {
+            title: {
+                required: true,
+            },
+            price: {
+                required: true,
+            },
+            resolution: {
+                required: true,
+            },
+            sound_quality: {
+                required: true,
+            },
+            supported_devices: {
+                required: true,
+            },
+            connection: {
+                required: true,
+            },
+        },
+        messages: {
+            title: {
+                required: "Title is required",
+            },
+            price: {
+                required: "Price is required",
+            },
+            resolution: {
+                required: "Resolution is required",
+            },
+            sound_quality: {
+                required: "Sound Quality is required",
+            },
+            supported_devices: {
+                required: "Supported Devices is required",
+            },
+            connection: {
+                required: "Connection is required",
+            },
+        },
     });
 
 });

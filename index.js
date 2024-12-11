@@ -16,6 +16,7 @@ const roleRoute = require("./routes/roleRoute");
 const categoryRoute = require("./routes/categoryRoute");
 const movieRoute = require("./routes/movieRoute");
 const topImagesRoute = require("./routes/topImagesRoute");
+const subscriptionRoute = require("./routes/subscriptionRoute");
 const discountRoute = require("./routes/discountRoute");
 const settingsRoute = require("./routes/settingsRoute");
 
@@ -65,6 +66,7 @@ app.use("/", roleRoute);
 app.use("/", categoryRoute);
 app.use("/", movieRoute);
 app.use("/", topImagesRoute);
+app.use("/", subscriptionRoute);
 app.use("/", discountRoute);
 app.use("/", settingsRoute);
 

@@ -1,0 +1,178 @@
+<%- include("../includes/header.ejs") %> <%- include("../includes/sidebar.ejs")
+%>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card card-primary">
+                    <% if(subscription){ %>
+                    <div class="card-header bg-success">
+                      <h3 class="text-light">Edit Subscription</h3>
+                    </div>
+                    <% }else{ %>
+                    <div class="card-header bg-primary">
+                      <h3 class="text-light">Add Subscription</h3>
+                    </div>
+                    <% } %>
+                    <form
+                      action="/add_subscription"
+                      method="post"
+                      id="formAddSubscription"
+                    >
+                      <div class="card-body">
+                        <input
+                          type="hidden"
+                          name="id"
+                          value="<%= subscription ? subscription.id : '' %>"
+                        />
+
+                        <div class="form-group row">
+                          <!-- Title -->
+                          <label for="title" class="col-sm-2 col-form-label"
+                            >Title <span class="text-danger">*</span></label
+                          >
+                          <div class="col-sm-10">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="title"
+                              name="title"
+                              placeholder="Enter Title"
+                              value="<%= subscription ? subscription.title : '' %>"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <!-- Price -->
+                          <div class="col-md-4">
+                            <label for="price" class="col-form-label"
+                              >Price <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="price"
+                              name="price"
+                              placeholder="Enter Price"
+                              value="<%= subscription ? subscription.price : '' %>"
+                            />
+                          </div>
+
+                          <!-- Resolution -->
+                          <div class="col-md-4">
+                            <label for="resolution" class="col-form-label"
+                              >Resolution
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="resolution"
+                              name="resolution"
+                              placeholder="Enter Resolution"
+                              value="<%= subscription ? subscription.resolution : '' %>"
+                            />
+                          </div>
+
+                          <!-- Sound Quality -->
+                          <div class="col-md-4">
+                            <label for="sound_quality" class="col-form-label"
+                              >Sound Quality
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="sound_quality"
+                              name="sound_quality"
+                              placeholder="Enter Sound Quality"
+                              value="<%= subscription ? subscription.sound_quality : '' %>"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <!-- Supported Device -->
+                          <div class="col-md-4">
+                            <label for="supported_device" class="col-form-label"
+                              >Supported Device
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="supported_devices"
+                              name="supported_devices"
+                              placeholder="Enter Supported Device"
+                              value="<%= subscription ? subscription.supported_devices : '' %>"
+                            />
+                          </div>
+
+                          <!-- Connection -->
+                          <div class="col-md-4">
+                            <label for="connection" class="col-form-label"
+                              >Connection
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="connection"
+                              name="connection"
+                              placeholder="Enter Connection"
+                              value="<%= subscription ? subscription.connection : '' %>"
+                            />
+                          </div>
+
+                          <!-- Is Active -->
+                          <div class="col-md-4">
+                            <label class="col-form-label">Active</label>
+                            <div class="form-check">
+                              <input type="checkbox" class="form-check-input"
+                              name="isActive" id="isActive" <%= subscription &&
+                              subscription.isActive == 1 ? 'checked' : '' %>>
+                              <label class="form-check-label" for="isActive"
+                                >Active</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="card-footer">
+                          <button
+                            type="submit"
+                            name="add"
+                            class="btn btn-<% if(subscription){ %>success<% }else{ %>primary<% } %>"
+                          >
+                            <% if(subscription){ %> Edit <% }else{ %> Add <% }
+                            %>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+</div>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark"></aside>
+
+<%- include("../includes/footer.ejs") %>

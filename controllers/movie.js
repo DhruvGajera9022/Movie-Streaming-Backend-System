@@ -3,6 +3,7 @@ const Category = require("../models/category");
 
 const fs = require('fs');
 const { DateTime } = require("luxon");
+const { body, validationResult } = require("express-validator");
 
 const dateHelper = require("../helpers/date_formator");
 const convertOverview = require('../helpers/html_decode');
@@ -77,9 +78,16 @@ const displayMoviePage = async (req, res) => {
     }
 
 }
-// To add-edit role
+// To add-edit movie
 const addOrEditMovie = async (req, res) => {
     try {
+
+        // Handle validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         let {
             id,
             title,
@@ -196,6 +204,38 @@ const deleteMovie = async (req, res) => {
     }
     res.redirect("/movie");
 }
+// validate movie fields
+const validateMovie = [
+    body("title").notEmpty().withMessage("Title is required."),
+    body("overview").isLength({ min: 10 }).withMessage("Overview must be at least 10 characters."),
+    body("category")
+        .notEmpty()
+        .withMessage("Category is required.")
+        .bail()
+        .isArray()
+        .withMessage("Category must be an array."),
+    body("original_language")
+        .notEmpty()
+        .withMessage("Original language is required.")
+        .isLength({ max: 2 })
+        .withMessage("Original language should be a valid ISO 639-1 code."),
+    body("release_date")
+        .optional()
+        .isISO8601()
+        .withMessage("Release date must be a valid date."),
+    body("popularity")
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("Popularity must be a positive number."),
+    body("vote_average")
+        .optional()
+        .isFloat({ min: 0, max: 10 })
+        .withMessage("Vote average must be between 0 and 10."),
+    body("vote_count")
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage("Vote count must be a positive integer."),
+];
 
 
 
@@ -421,6 +461,7 @@ module.exports = {
     displayMoviePage,
     addOrEditMovie,
     deleteMovie,
+    validateMovie,
 
     homeAPI,
     singleMovieAPI,

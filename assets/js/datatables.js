@@ -44,6 +44,11 @@ $(document).ready(function () {
         columnDefs: [{ orderable: false, targets: [0, 11] }]
     });
 
+    $("#subscriptiontable").dataTable({
+        order: [],
+        columnDefs: [{ orderable: false, targets: [7] }]
+    });
+
 
     $("#privacy_policy").summernote({
         placeholder: "Write your content here",

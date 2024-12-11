@@ -1,7 +1,9 @@
 const SliderImages = require("../models/sliderImages");
 const Category = require("../models/category");
+
 const fs = require("fs");
 const { DateTime } = require("luxon");
+const { body, validationResult } = require("express-validator");
 
 const dateHelper = require("../helpers/date_formator");
 const convertOverview = require('../helpers/html_decode');
@@ -81,6 +83,13 @@ const displayTopImagesPage = async (req, res) => {
 // To add-edit top image
 const addOrEditTopImage = async (req, res) => {
     try {
+
+        // Validate the request
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         let {
             id,
             title,
@@ -199,6 +208,19 @@ const deleteTopImage = async (req, res) => {
         console.error("Error in deleteTopImage:", error);
     }
 }
+// validate fields
+const validateTopImage = [
+    body("title").notEmpty().withMessage("Title is required."),
+    body("category").optional().isArray().withMessage("Category must be an array."),
+    body("description").optional().isString().withMessage("Description must be a string."),
+    body("language").notEmpty().withMessage("Language is required."),
+    body("release_date").optional().isISO8601().withMessage("Invalid release date format."),
+    body("duration").optional().isNumeric().withMessage("Duration must be a number."),
+    body("isPlay").optional().isBoolean().withMessage("isPlay must be a boolean."),
+    body("isMore").optional().isBoolean().withMessage("isMore must be a boolean."),
+    body("isImage").optional().isBoolean().withMessage("isImage must be a boolean."),
+    body("isActive").optional().isBoolean().withMessage("isActive must be a boolean.")
+];
 
 
 // Top Images API
@@ -274,6 +296,7 @@ module.exports = {
     displayTopImagesPage,
     addOrEditTopImage,
     deleteTopImage,
+    validateTopImage,
 
     topImagesAPI,
 }

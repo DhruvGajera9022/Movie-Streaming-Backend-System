@@ -9,7 +9,6 @@
             type: 'GET',
             dataType: 'json',
             success: function (setting) {
-                debugger
                 $('#settings-grid').empty();
 
                 var settingHtml = `

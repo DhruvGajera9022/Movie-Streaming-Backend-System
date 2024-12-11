@@ -12,7 +12,7 @@ router.get("/topImages", topImagesController.topImages);
 
 // Add-Edit-Delete Top Images route
 router.get("/add_topImages/:id?", topImagesController.displayTopImagesPage);
-router.post("/add_topImages", imageHelper.uploadTopImages, topImagesController.addOrEditTopImage);
+router.post("/add_topImages", imageHelper.uploadTopImages, topImagesController.validateTopImage, topImagesController.addOrEditTopImage);
 router.post("/add_topImages/delete/:id", imageHelper.uploadTopImages, topImagesController.deleteTopImage);
 
 

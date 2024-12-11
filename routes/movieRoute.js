@@ -13,7 +13,7 @@ router.get("/movie", movieController.getMovies);
 
 // Add-Edit-Delete Movie route
 router.get("/add_movie/:id?", Middleware.authenticate, Middleware.isAdmin, movieController.displayMoviePage);
-router.post("/add_movie", imageHelper.uploadMovieImages, movieController.addOrEditMovie);
+router.post("/add_movie", imageHelper.uploadMovieImages, movieController.validateMovie, movieController.addOrEditMovie);
 router.post("/add_movie/delete/:id", imageHelper.uploadMovieImages, movieController.deleteMovie);
 
 
