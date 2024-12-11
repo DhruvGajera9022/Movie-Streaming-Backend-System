@@ -14,7 +14,6 @@ const getMovies = async (req, res) => {
     allMovies = await Promise.all(
         allMovies.map(async (movie) => {
             const genreIds = movie.genre_ids;
-            console.log(genreIds);
 
             // Convert the overview
             const newOverview = await convertOverview(movie.overview);
@@ -49,7 +48,6 @@ const getMovies = async (req, res) => {
         allMovies,
     });
 };
-
 
 
 
@@ -330,6 +328,58 @@ const homeAPI = async (req, res) => {
 
 
 
+// Single Movie API
+const singleMovieAPI = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const baseURL = `${process.env.URL}${process.env.PORT}`;
+
+        // Find the movie by ID
+        const movie = await Movies.findOne({ where: { id: id } });
+
+        if (!movie) {
+            return res.json({
+                status: false,
+                message: "Movie not found."
+            });
+        }
+
+        let categoryId = movie.genre_ids;
+
+        const categoryNames = await Promise.all(
+            categoryId.map(async (id) => {
+                const category = await Category.findOne({ where: { id: id } });
+                return category ? category.name : null;
+            })
+        );
+
+        const movieDetail = {
+            id: movie.id,
+            title: movie.title,
+            overview: await convertOverview(movie.overview),
+            category: categoryNames.filter((name) => name !== null),
+            backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
+            original_language: movie.original_language,
+            release_date: movie.release_date,
+            vote_average: movie.vote_average,
+            vote_count: movie.vote_count,
+        };
+
+        res.json({
+            status: true,
+            data: movieDetail
+        });
+    } catch (error) {
+        console.error("Error in Single Movie API:", error);
+        res.json({
+            status: false,
+            message: "Error in Single Movie API."
+        });
+    }
+};
+
+
+
 // For formate the response data
 const movieData = async (movie) => {
 
@@ -371,4 +421,5 @@ module.exports = {
     deleteMovie,
 
     homeAPI,
+    singleMovieAPI,
 }
