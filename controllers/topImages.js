@@ -1,6 +1,7 @@
 const SliderImages = require("../models/sliderImages");
 const Category = require("../models/category");
 const fs = require("fs");
+const { DateTime } = require("luxon");
 
 const dateHelper = require("../helpers/date_formator");
 const convertOverview = require('../helpers/html_decode');
@@ -234,8 +235,8 @@ const topImagesAPI = async (req, res) => {
                     description: newDescription,
                     category: categories,
                     language: top.language,
-                    release_date: dateHelper.formatDate(top.release_date),
-                    duration: top.duration,
+                    release_date: DateTime.fromISO(top.release_date).toFormat("DD"),
+                    duration: top.duration.split(':').join('h ').replace(/(\d{1})$/, '$1m'),
                     isPlay: top.isPlay,
                     isMoreInfo: top.isMoreInfo,
                     isImage: top.isImage,

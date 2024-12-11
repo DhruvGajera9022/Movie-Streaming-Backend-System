@@ -2,6 +2,7 @@ const Movies = require("../models/movie");
 const Category = require("../models/category");
 
 const fs = require('fs');
+const { DateTime } = require("luxon");
 
 const dateHelper = require("../helpers/date_formator");
 const convertOverview = require('../helpers/html_decode');
@@ -34,9 +35,10 @@ const getMovies = async (req, res) => {
                 })
             );
 
+
             return {
                 ...movie.dataValues,
-                formattedDate: dateHelper.formatDate(movie.release_date),
+                formattedDate: DateTime.fromISO(movie.release_date).toFormat("dd-MMMM-yyyy"),
                 newOverview: newOverview,
                 categories,
             };
@@ -360,7 +362,7 @@ const singleMovieAPI = async (req, res) => {
             category: categoryNames.filter((name) => name !== null),
             backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
             original_language: movie.original_language,
-            release_date: movie.release_date,
+            release_date: DateTime.fromISO(movie.release_date).toFormat("DD"),
             vote_average: movie.vote_average,
             vote_count: movie.vote_count,
         };
@@ -395,7 +397,7 @@ const movieData = async (movie) => {
         // original_title: movie.original_title,
         // popularity: movie.popularity,
         // poster_path: `${baseURL}/img/movieImages/${movie.poster_path}`,
-        release_date: movie.release_date,
+        release_date: DateTime.fromISO(movie.release_date).toFormat("DD"),
         // video: movie.video,
         vote_average: movie.vote_average,
         vote_count: movie.vote_count,
