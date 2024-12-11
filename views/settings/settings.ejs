@@ -1,168 +1,243 @@
-<%- include("../includes/header.ejs") %>
-    <%- include("../includes/sidebar.ejs") %>
+<%- include("../includes/header.ejs") %> <%- include("../includes/sidebar.ejs")
+%>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Settings</h1>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Settings</h1>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="table-responsive-sm">
+                    <!-- Form to update Settings -->
+                    <form
+                      action="/add_settings"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      id="addSettings"
+                    >
+                      <input
+                        type="hidden"
+                        name="id"
+                        value="<%= settingsData && settingsData.id ? settingsData.id :  '' %>"
+                      />
+
+                      <!-- Email - Phone -->
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="email"
+                              >Email <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="email"
+                              class="form-control"
+                              id="email"
+                              name="email"
+                              placeholder="Enter email"
+                              value="<%= settingsData ? settingsData.email : '' %>"
+                            />
+                          </div>
                         </div>
-                    </div>
-
-                    <!-- Main content -->
-                    <section class="content">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive-sm">
-                                                <!-- Form to update Settings -->
-                                                <form action="/add_settings" method="POST" enctype="multipart/form-data"
-                                                    id="addSettings">
-
-                                                    <input type="hidden" name="id"
-                                                        value="<%= settingsData && settingsData.id ? settingsData.id :  '' %>">
-
-                                                    <!-- Email - Phone -->
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="email">Email <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="email" class="form-control" id="email"
-                                                                    name="email" placeholder="Enter email"
-                                                                    value="<%= settingsData ? settingsData.email : '' %>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="phone">Phone <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" id="phone"
-                                                                    name="phone" placeholder="Enter phone number"
-                                                                    value="<%= settingsData ? settingsData.phone : '' %>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Facebook - Twitter -->
-                                                    <div class="row mt-4">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="facebook">Facebook</label>
-                                                                <input type="text" class="form-control" id="facebook"
-                                                                    name="facebook" placeholder="Enter Facebook"
-                                                                    value="<%= settingsData ? settingsData.facebook : '' %>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="twitter">Twitter</label>
-                                                                <input type="text" class="form-control" id="twitter"
-                                                                    name="twitter" placeholder="Enter Twitter"
-                                                                    value="<%= settingsData ? settingsData.twitter : '' %>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- LinkedIn - Instagram -->
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="linkedIn">LinkedIn</label>
-                                                                <input type="text" class="form-control" id="linkedIn"
-                                                                    name="linkedIn" placeholder="Enter LinkedIn"
-                                                                    value="<%= settingsData ? settingsData.linkedIn : '' %>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="instagram">Instagram</label>
-                                                                <input type="text" class="form-control" id="instagram"
-                                                                    name="instagram" placeholder="Enter Instagram"
-                                                                    value="<%= settingsData ? settingsData.instagram : '' %>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- App store - Play store -->
-                                                    <div class="row mt-4">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="app_store">App Store</label>
-                                                                <input type="text" class="form-control" id="app_store"
-                                                                    name="app_store" placeholder="Enter App Store"
-                                                                    value="<%= settingsData ? settingsData.app_store : '' %>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="play_store">Play Store</label>
-                                                                <input type="text" class="form-control" id="play_store"
-                                                                    name="play_store" placeholder="Enter Play Store"
-                                                                    value="<%= settingsData ? settingsData.play_store : '' %>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Logo -->
-                                                    <div class="form-group mt-4 ">
-                                                        <label for="image">Logo</label>
-                                                        <input type="file" name="image" id="image" class="form-control">
-                                                        <input type="hidden" name="image_old"
-                                                            value="<%= settingsData ? settingsData.logo : '' %>" />
-                                                    </div>
-
-                                                    <!-- Description -->
-                                                    <div class="form-group mt-4">
-                                                        <label for="description">Description</label>
-                                                        <textarea class="form-control" id="description"
-                                                            name="description" rows="3"
-                                                            placeholder="Enter description"><%= settingsData ? settingsData.description: '' %></textarea>
-                                                    </div>
-
-                                                    <!-- Privacy Policy -->
-                                                    <div class="form-group mt-4">
-                                                        <label for="privacy_policy">Privacy Policy</label>
-                                                        <textarea class="form-control" id="privacy_policy"
-                                                            name="privacy_policy" rows="3"
-                                                            placeholder="Enter Privacy Policy"> <%= settingsData ? settingsData.privacy_policy : '' %></textarea>
-                                                    </div>
-
-                                                    <!-- Terms & Conditions -->
-                                                    <div class="form-group mt-4">
-                                                        <label for="term_condition">Terms & Conditions</label>
-                                                        <textarea class="form-control" id="term_condition"
-                                                            name="term_condition" rows="3"
-                                                            placeholder="Enter Terms & Conditions"> <%= settingsData ? settingsData.term_condition : '' %></textarea>
-                                                    </div>
-
-                                                    <button type="submit" class="btn btn-primary" id="saveSetting">Save
-                                                        Settings
-                                                    </button>
-                                                </form>
-
-                                                <!-- Display Settings in Grid -->
-                                                <div class="row mt-3" id="settings-grid"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="phone"
+                              >Phone <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="phone"
+                              name="phone"
+                              placeholder="Enter phone number"
+                              value="<%= settingsData ? settingsData.phone : '' %>"
+                            />
+                          </div>
                         </div>
-                    </section>
+                      </div>
+
+                      <!-- Facebook - Twitter -->
+                      <div class="row mt-4">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="facebook">Facebook</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="facebook"
+                              name="facebook"
+                              placeholder="Enter Facebook"
+                              value="<%= settingsData ? settingsData.facebook : '' %>"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="twitter">Twitter</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="twitter"
+                              name="twitter"
+                              placeholder="Enter Twitter"
+                              value="<%= settingsData ? settingsData.twitter : '' %>"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- LinkedIn - Instagram -->
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="linkedIn">LinkedIn</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="linkedIn"
+                              name="linkedIn"
+                              placeholder="Enter LinkedIn"
+                              value="<%= settingsData ? settingsData.linkedIn : '' %>"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="instagram">Instagram</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="instagram"
+                              name="instagram"
+                              placeholder="Enter Instagram"
+                              value="<%= settingsData ? settingsData.instagram : '' %>"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- App store - Play store -->
+                      <div class="row mt-4">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="app_store">App Store</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="app_store"
+                              name="app_store"
+                              placeholder="Enter App Store"
+                              value="<%= settingsData ? settingsData.app_store : '' %>"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="play_store">Play Store</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="play_store"
+                              name="play_store"
+                              placeholder="Enter Play Store"
+                              value="<%= settingsData ? settingsData.play_store : '' %>"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Logo -->
+                      <div class="form-group mt-4">
+                        <label for="image">Logo</label>
+                        <input
+                          type="file"
+                          name="image"
+                          id="image"
+                          class="form-control"
+                        />
+                        <input
+                          type="hidden"
+                          name="image_old"
+                          value="<%= settingsData ? settingsData.logo : '' %>"
+                        />
+                      </div>
+
+                      <!-- Description -->
+                      <div class="form-group mt-4">
+                        <label for="description">Description</label>
+                        <textarea
+                          class="form-control"
+                          id="description"
+                          name="description"
+                          rows="3"
+                          placeholder="Enter description"
+                        >
+<%= settingsData ? settingsData.description: '' %></textarea
+                        >
+                      </div>
+
+                      <!-- Privacy Policy -->
+                      <div class="form-group mt-4">
+                        <label for="privacy_policy">Privacy Policy</label>
+                        <textarea
+                          class="form-control"
+                          id="privacy_policy"
+                          name="privacy_policy"
+                          rows="3"
+                          placeholder="Enter Privacy Policy"
+                        >
+ <%= settingsData ? settingsData.privacy_policy : '' %></textarea
+                        >
+                      </div>
+
+                      <!-- Terms & Conditions -->
+                      <div class="form-group mt-4">
+                        <label for="term_condition">Terms & Conditions</label>
+                        <textarea
+                          class="form-control"
+                          id="term_condition"
+                          name="term_condition"
+                          rows="3"
+                          placeholder="Enter Terms & Conditions"
+                        >
+ <%= settingsData ? settingsData.term_condition : '' %></textarea
+                        >
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="saveSetting"
+                      >
+                        Save Settings
+                      </button>
+                    </form>
+
+                    <!-- Display Settings in Grid -->
+                    <div class="row mt-3" id="settings-grid"></div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark"></aside>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
 
-            <%- include("../includes/footer.ejs") %>
-
-                <%- include("../../assets/js/JQuery/settings.js") %>
-                    </body>
-
-                    </html>
+  <%- include("../includes/footer.ejs") %> <%-
+  include("../../assets/js/JQuery/settings.js") %>
+</div>

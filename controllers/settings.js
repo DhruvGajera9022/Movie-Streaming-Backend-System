@@ -29,19 +29,25 @@ const displaySettings = async (req, res) => {
 }
 // To add settings
 const addSettings = async (req, res) => {
-    let { id, email, phone, facebook, twitter, linkedIn, instagram, app_store, play_store, privacy_policy, description, image_old, term_condition } = req.body;
-    let image = req.file ? req.file.filename : image_old;
+    try {
+        const {
+            id, email, phone, facebook, twitter, linkedIn, instagram,
+            app_store, play_store, privacy_policy, description, image_old, term_condition
+        } = req.body;
 
-    if (req.file && image_old) {
-        fs.unlink(`assets/img/settingImages/${image_old}`, (err) => {
-            if (err) {
+        const image = req.file ? req.file.filename : image_old;
+
+        // Delete the old image if a new image is uploaded
+        if (req.file && image_old) {
+            try {
+                await fs.unlink(`assets/img/settingImages/${image_old}`);
+            } catch (err) {
                 console.error("Failed to delete old image:", err);
             }
-        });
-    }
+        }
 
-    if (id) {
-        const [isSettingUpdated] = await Settings.update({
+        // Define the new settings object
+        const settingsData = {
             email,
             phone,
             facebook,
@@ -53,32 +59,12 @@ const addSettings = async (req, res) => {
             logo: image,
             privacy_policy,
             description,
-            term_condition,
-        }, { where: { id } });
+            term_condition
+        };
 
-        if (isSettingUpdated) {
-            return res.redirect("/settings");
-        } else {
-            return res.status(400).send("Failed to edit settings");
-        }
-    } else {
-        const existingSettings = await getAllSettings();
-
-        if (existingSettings.length > 0) {
-            const [isSettingUpdated] = await Settings.update({
-                email,
-                phone,
-                facebook,
-                twitter,
-                linkedIn,
-                instagram,
-                app_store,
-                play_store,
-                logo: image,
-                privacy_policy,
-                description,
-                term_condition,
-            }, { where: { id: existingSettings[0].id } });
+        if (id) {
+            // Update settings by ID
+            const [isSettingUpdated] = await Settings.update(settingsData, { where: { id } });
 
             if (isSettingUpdated) {
                 return res.redirect("/settings");
@@ -86,27 +72,35 @@ const addSettings = async (req, res) => {
                 return res.status(400).send("Failed to edit settings");
             }
         } else {
-            const newSetting = await Settings.create({
-                email,
-                phone,
-                facebook,
-                twitter,
-                linkedIn,
-                instagram,
-                app_store,
-                play_store,
-                logo: image,
-                privacy_policy,
-                description,
-                term_condition
-            });
+            // Check for existing settings
+            const existingSettings = await getAllSettings();
 
-            if (newSetting) {
-                return res.redirect("/settings");
+            if (Array.isArray(existingSettings) && existingSettings.length > 0) {
+                // Update the first existing setting
+                const [isSettingUpdated] = await Settings.update(
+                    settingsData,
+                    { where: { id: existingSettings[0].id } }
+                );
+
+                if (isSettingUpdated) {
+                    return res.redirect("/settings");
+                } else {
+                    return res.status(400).send("Failed to edit settings");
+                }
             } else {
-                return res.status(400).send("Failed to add settings");
+                // Create new settings
+                const newSetting = await Settings.create(settingsData);
+
+                if (newSetting) {
+                    return res.redirect("/settings");
+                } else {
+                    return res.status(400).send("Failed to add settings");
+                }
             }
         }
+    } catch (error) {
+        console.error("Error in addSettings:", error);
+        return res.status(500).send("An error occurred while processing your request.");
     }
 };
 
