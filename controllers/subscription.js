@@ -124,14 +124,10 @@ const validateFields = [
     body('sound_quality')
         .optional().isString().withMessage('Sound quality must be a string')
         .trim().escape(),
-    body('supported_devices')
-        .isArray({ min: 1 }).withMessage('Supported devices must be a non-empty array'),
     body('connection')
         .isString().withMessage('Connection type must be a string')
         .notEmpty().withMessage('Connection type is required')
         .trim().escape(),
-    body('isActive')
-        .isBoolean().withMessage('isActive must be a boolean value')
 ];
 
 
