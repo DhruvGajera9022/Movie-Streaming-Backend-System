@@ -1,4 +1,6 @@
 const Razorpay = require("razorpay");
+const { DateTime } = require("luxon");
+
 require("dotenv").config();
 const Invoice = require("../models/invoice");
 
@@ -45,13 +47,17 @@ const generateInvoice = async (req, res) => {
 
     const status = paymentAllData.captured ? 1 : 0;
 
+    let date = Date.now();
+    let validFrom = DateTime.fromISO(new Date(date).toISOString()).toFormat("dd-MMMM-yyyy");
+    let validTo = DateTime.fromMillis(date).plus({ months: 1 }).toFormat("dd-MMMM-yyyy");
+
     if (paymentAllData) {
         const isInvoiceGenerated = await Invoice.create({
             userId: req.userId,
             subscriptionId: paymentData.SubId,
             transactionId: paymentAllData.id,
-            validFrom: new Date(),
-            validTo: new Date(),
+            validFrom: validFrom,
+            validTo: validTo,
             amount: paymentAllData.amount / 100,
             status,
         });

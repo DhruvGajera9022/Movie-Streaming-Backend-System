@@ -1,13 +1,25 @@
 const Invoice = require("../models/invoice");
 
 const colors = require("colors");
+const { DateTime } = require("luxon");
 
 
 
 // To display invoice page
 const invoice = async (req, res) => {
     try {
-        const allData = await getAllInvoice();
+        let allData = await getAllInvoice();
+
+        let date = Date.now();
+        let dateF = DateTime.fromISO(new Date(date).toISOString()).toFormat("dd-MMMM-yyyy");
+        console.log(`Date: ${dateF}`.bgYellow.black.bold);
+
+        // allData = await Promise.all(allData.map(async (data) => {
+        //     return {
+        //         validFrom: DateTime.fromISO(data.validFrom).toFormat("dd-MMMM-yyyy"),
+        //         validTo: DateTime.fromISO(data.validTo).toFormat("dd-MMMM-yyyy"),
+        //     };
+        // }));
 
         res.render("invoice/invoice", {
             title: "Invoices",
@@ -16,7 +28,8 @@ const invoice = async (req, res) => {
     } catch (error) {
         console.log(`Error in Invoice ${error}`.bgRed.white);
     }
-}
+};
+
 
 
 

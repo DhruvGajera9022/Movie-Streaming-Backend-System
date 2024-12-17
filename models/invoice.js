@@ -25,11 +25,11 @@ const Invoice = sequelize.define("invoice", {
         allowNull: false,
     },
     validFrom: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     validTo: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     status: {
