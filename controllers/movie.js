@@ -210,18 +210,12 @@ const validateMovie = [
     body("overview").isLength({ min: 10 }).withMessage("Overview must be at least 10 characters."),
     body("category")
         .notEmpty()
-        .withMessage("Category is required.")
-        .bail()
-        .isArray()
-        .withMessage("Category must be an array."),
+        .withMessage("Category is required."),
     body("original_language")
         .notEmpty()
-        .withMessage("Original language is required.")
-        .isLength({ max: 2 })
-        .withMessage("Original language should be a valid ISO 639-1 code."),
+        .withMessage("Original language is required."),
     body("release_date")
         .optional()
-        .isISO8601()
         .withMessage("Release date must be a valid date."),
     body("popularity")
         .optional()
