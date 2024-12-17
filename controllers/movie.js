@@ -215,8 +215,7 @@ const validateMovie = [
         .notEmpty()
         .withMessage("Original language is required."),
     body("release_date")
-        .optional()
-        .withMessage("Release date must be a valid date."),
+        .optional(),
     body("popularity")
         .optional()
         .isFloat({ min: 0 })
