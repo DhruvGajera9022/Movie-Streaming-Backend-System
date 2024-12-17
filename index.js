@@ -17,8 +17,10 @@ const categoryRoute = require("./routes/categoryRoute");
 const movieRoute = require("./routes/movieRoute");
 const topImagesRoute = require("./routes/topImagesRoute");
 const subscriptionRoute = require("./routes/subscriptionRoute");
+const invoiceRoute = require("./routes/invoiceRoute");
 const discountRoute = require("./routes/discountRoute");
 const settingsRoute = require("./routes/settingsRoute");
+const paymentRoute = require("./routes/paymentRoute");
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
@@ -67,8 +69,10 @@ app.use("/", categoryRoute);
 app.use("/", movieRoute);
 app.use("/", topImagesRoute);
 app.use("/", subscriptionRoute);
+app.use("/", invoiceRoute);
 app.use("/", discountRoute);
 app.use("/", settingsRoute);
+app.use("/", paymentRoute);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

@@ -160,9 +160,7 @@ const subscriptionAPI = async (req, res) => {
 
 // Fetch subscription
 const getAllSubscription = async () => {
-    return await Subscription.findAll({
-        order: [['id', 'DESC']]
-    });
+    return await Subscription.findAll({});
 }
 
 

@@ -71,9 +71,18 @@
 
         <!-- Subscription (Initially hidden) -->
         <li class="nav-item admin-only" style="display:none;">
-          <a href="/subscription" class="nav-link <%= ["Subscription", "Add Subscription" , "Edit Subscription" ].includes(title) ? "active" : "" %>">
+          <a href="/subscription" class="nav-link <%= ["Subscriptions", "Add Subscription" , "Edit Subscription" ].includes(title) ? "active" : "" %>">
             <i class="nav-icon fas fa-dollar-sign"></i>
             <p>Subscription</p>
+          </a>
+        </li>
+
+        <!-- Invoice (Initially hidden) -->
+        <li class="nav-item admin-only" style="display:none;">
+          <a href="/invoice" class="nav-link <%= ["Invoices"].includes(title)
+            ? "active" : "" %>">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>Invoice</p>
           </a>
         </li>
 

@@ -8,7 +8,7 @@ const Middleware = require("../middlewares/auth_middleware");
 const imageHelper = require("../helpers/store_image");
 
 // Movie route
-router.get("/movie", movieController.getMovies);
+router.get("/movie", Middleware.isAdmin, Middleware.authenticate, movieController.getMovies);
 
 
 // Add-Edit-Delete Movie route

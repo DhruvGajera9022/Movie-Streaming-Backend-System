@@ -9,7 +9,7 @@ const dateHelper = require("../helpers/date_formator");
 const convertOverview = require('../helpers/html_decode');
 
 
-
+// To display movies page
 const getMovies = async (req, res) => {
     let allMovies = await getAllMovies();
 
