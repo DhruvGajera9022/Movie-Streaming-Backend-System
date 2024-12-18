@@ -93,6 +93,65 @@ const invoiceAPI = async (req, res) => {
         });
     }
 }
+// Single invoice API
+const singleInvoiceAPI = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const invoiceId = req.params.id;
+
+        let invoiceData = await Invoice.findOne({ where: { id: invoiceId } });
+
+        if (!invoiceData) {
+            res.json({
+                status: false,
+                message: "Invoice not found",
+            });
+        }
+
+        let userData = await Users.findOne({ where: { id: invoiceData.userId } });
+        let subscriptionData = await Subscriptions.findOne({ where: { id: invoiceData.subscriptionId } });
+
+
+        const invoice = {
+            id: invoiceData.id,
+            transactionId: invoiceData.transactionId,
+            amount: invoiceData.amount,
+            validFrom: invoiceData.validFrom,
+            validTo: invoiceData.validTo,
+            status: invoiceData.status,
+        }
+
+        const user = {
+            fullName: userData.fullName,
+            email: userData.email,
+            number: userData.number,
+        }
+
+        const subscription = {
+            title: subscriptionData.title,
+            resolution: subscriptionData.resolution,
+            sound_quality: subscriptionData.sound_quality,
+            supported_devices: subscriptionData.supported_devices,
+            connection: subscriptionData.connection
+        }
+
+
+        res.json({
+            status: true,
+            data: {
+                invoice: invoice,
+                user: user,
+                subscription: subscription
+            }
+        });
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in Single Invoice API",
+        });
+        console.log(error);
+    }
+}
 
 
 
@@ -111,4 +170,5 @@ module.exports = {
     deleteInvoice,
 
     invoiceAPI,
+    singleInvoiceAPI,
 }
