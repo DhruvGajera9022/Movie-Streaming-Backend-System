@@ -406,7 +406,7 @@ const updateProfileAPI = async (req, res) => {
             gender: user.gender,
             dob: user.dob,
             hobbies: user.hobbies,
-            image: `${baseURL}/img/userImages/${user.image}`,
+            image: user.image ? `${baseURL}/img/userImages/${user.image}` : null,
             role: user.role,
             emailToken: user.emailToken,
             isVerified: user.isVerified,
