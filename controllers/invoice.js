@@ -1,7 +1,8 @@
 const Invoice = require("../models/invoice");
+const Users = require("../models/user");
+const Subscriptions = require("../models/subscription");
 
 const colors = require("colors");
-const { DateTime } = require("luxon");
 
 
 
@@ -28,7 +29,6 @@ const invoice = async (req, res) => {
 
 
 
-
 // Delete invoice
 const deleteInvoice = async (req, res) => {
     try {
@@ -45,11 +45,46 @@ const deleteInvoice = async (req, res) => {
 // Invoice API
 const invoiceAPI = async (req, res) => {
     try {
-        const allInvoices = await getAllInvoice();
+        const userId = req.userId;
+
+        let allInvoices = await Invoice.findAll({ where: { userId } });
+
+        allInvoices = await Promise.all(
+            allInvoices.map(async (invoice) => {
+                let user = await Users.findOne({ where: { id: invoice.userId } });
+                let subscription = await Subscriptions.findOne({ where: { id: invoice.subscriptionId } });
+
+                return {
+                    invoice: {
+                        id: invoice.id,
+                        transactionId: invoice.transactionId,
+                        amount: invoice.amount,
+                        validFrom: invoice.validFrom,
+                        validTo: invoice.validTo,
+                        status: invoice.status,
+                    },
+
+                    user: {
+                        fullName: user.fullName,
+                        email: user.email,
+                        number: user.number,
+                    },
+
+                    subscription: {
+                        title: subscription.title,
+                        resolution: subscription.resolution,
+                        sound_quality: subscription.sound_quality,
+                        supported_devices: subscription.supported_devices,
+                        connection: subscription.connection
+                    }
+                }
+
+            })
+        )
 
         res.json({
             status: true,
-            data: allInvoices,
+            data: allInvoices
         });
     } catch (error) {
         res.json({
@@ -67,9 +102,6 @@ const getAllInvoice = async (req, res) => {
         order: [['id', 'DESC']]
     });
 }
-
-
-
 
 
 
