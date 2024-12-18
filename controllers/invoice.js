@@ -10,10 +10,6 @@ const invoice = async (req, res) => {
     try {
         let allData = await getAllInvoice();
 
-        let date = Date.now();
-        let dateF = DateTime.fromISO(new Date(date).toISOString()).toFormat("dd-MMMM-yyyy");
-        console.log(`Date: ${dateF}`.bgYellow.black.bold);
-
         // allData = await Promise.all(allData.map(async (data) => {
         //     return {
         //         validFrom: DateTime.fromISO(data.validFrom).toFormat("dd-MMMM-yyyy"),
