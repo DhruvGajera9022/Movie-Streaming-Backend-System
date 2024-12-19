@@ -1,5 +1,4 @@
 const Invoice = require("../models/invoice");
-const Users = require("../models/user");
 const Subscriptions = require("../models/subscription");
 
 const colors = require("colors");
@@ -82,7 +81,6 @@ const invoiceAPI = async (req, res) => {
 // Single invoice API
 const singleInvoiceAPI = async (req, res) => {
     try {
-        const userId = req.userId;
         const invoiceId = req.params.id;
 
         let invoiceData = await Invoice.findOne({ where: { id: invoiceId } });
@@ -94,9 +92,7 @@ const singleInvoiceAPI = async (req, res) => {
             });
         }
 
-        let userData = await Users.findOne({ where: { id: invoiceData.userId } });
         let subscriptionData = await Subscriptions.findOne({ where: { id: invoiceData.subscriptionId } });
-
 
         const invoice = {
             id: invoiceData.id,
@@ -107,12 +103,6 @@ const singleInvoiceAPI = async (req, res) => {
             status: invoiceData.status,
         }
 
-        const user = {
-            fullName: userData.fullName,
-            email: userData.email,
-            number: userData.number,
-        }
-
         const subscription = {
             title: subscriptionData.title,
             resolution: subscriptionData.resolution,
@@ -121,12 +111,10 @@ const singleInvoiceAPI = async (req, res) => {
             connection: subscriptionData.connection
         }
 
-
         res.json({
             status: true,
             data: {
                 invoice: invoice,
-                user: user,
                 subscription: subscription
             }
         });
