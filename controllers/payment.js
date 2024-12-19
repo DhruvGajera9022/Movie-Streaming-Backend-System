@@ -47,9 +47,9 @@ const generateInvoice = async (req, res) => {
 
     const status = paymentAllData.captured ? 1 : 0;
 
-    let date = Date.now();
-    let validFrom = DateTime.fromISO(new Date(date).toISOString()).toFormat("dd-MMMM-yyyy");
-    let validTo = DateTime.fromMillis(date).plus({ months: 1 }).toFormat("dd-MMMM-yyyy");
+    let validFrom = new Date();
+    let validTo = new Date();
+    validTo.setMonth(validTo.getMonth() + 1);
 
     if (paymentAllData) {
         const isInvoiceGenerated = await Invoice.create({
