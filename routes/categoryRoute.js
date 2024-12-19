@@ -3,8 +3,6 @@ const router = express.Router();
 
 const categoryController = require("../controllers/category");
 
-const imageHelper = require("../helpers/store_image");
-
 const Middleware = require("../middlewares/auth_middleware");
 
 
