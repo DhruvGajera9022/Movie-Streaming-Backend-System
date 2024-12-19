@@ -11,13 +11,6 @@ const invoice = async (req, res) => {
     try {
         let allData = await getAllInvoice();
 
-        // allData = await Promise.all(allData.map(async (data) => {
-        //     return {
-        //         validFrom: DateTime.fromISO(data.validFrom).toFormat("dd-MMMM-yyyy"),
-        //         validTo: DateTime.fromISO(data.validTo).toFormat("dd-MMMM-yyyy"),
-        //     };
-        // }));
-
         res.render("invoice/invoice", {
             title: "Invoices",
             allData
