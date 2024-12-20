@@ -1,17 +1,17 @@
 $(document).ready(function () {
     $("#userstable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 7] }]
+        columnDefs: [{ orderable: false, targets: [1, 8] }]
     });
 
     $("#roletable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [2] }]
+        columnDefs: [{ orderable: false, targets: [3] }]
     })
 
     $("#categorytable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [2] }]
+        columnDefs: [{ orderable: false, targets: [3] }]
     })
 
     $("#productstable").dataTable({
@@ -21,12 +21,12 @@ $(document).ready(function () {
 
     $("#inovicetable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [7] }]
+        columnDefs: [{ orderable: false, targets: [8] }]
     });
 
     $("#discounttable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 7] }]
+        columnDefs: [{ orderable: false, targets: [1, 8] }]
     });
 
     $("#inovicedetailstable").dataTable({
@@ -36,17 +36,17 @@ $(document).ready(function () {
 
     $("#movietable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 6, 13] }]
+        columnDefs: [{ orderable: false, targets: [1, 7, 14] }]
     });
 
     $("#topIMagesTable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [0, 11] }]
+        columnDefs: [{ orderable: false, targets: [1, 12] }]
     });
 
     $("#subscriptiontable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [7] }]
+        columnDefs: [{ orderable: false, targets: [8] }]
     });
 
 

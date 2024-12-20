@@ -26,6 +26,7 @@
                                                     class="table table-dark table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
+                                                            <th>ID</th>
                                                             <th>Name</th>
                                                             <th>Active</th>
                                                             <th>Action</th>
@@ -34,6 +35,9 @@
                                                     <tbody>
                                                         <% allData.forEach(data=> { %>
                                                             <tr>
+                                                                <td>
+                                                                    <%= data.id %>
+                                                                </td>
                                                                 <td>
                                                                     <%= data.name %>
                                                                 </td>

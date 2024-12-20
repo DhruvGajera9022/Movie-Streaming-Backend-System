@@ -25,6 +25,7 @@
                         <table id="roletable" class="table table-dark table-striped table-bordered table-hover">
                           <thead>
                             <tr>
+                              <th>ID</th>
                               <th>Title</th>
                               <th>Description</th>
                               <th>Action</th>
@@ -33,6 +34,9 @@
                           <tbody>
                             <% allData.forEach(data=> { %>
                               <tr>
+                                <td>
+                                  <%= data.id %>
+                                </td>
                                 <td>
                                   <%= data.title %>
                                 </td>

@@ -25,6 +25,7 @@
                         <table id="movietable" class="table table-dark table-striped table-bordered table-hover">
                           <thead>
                             <tr>
+                              <th>ID</th>
                               <th>Poster</th>
                               <th>Title</th>
                               <th>Overview</th>
@@ -44,6 +45,9 @@
                           <tbody>
                             <% allMovies.forEach(data=> { %>
                               <tr>
+                                <td>
+                                  <%= data.id %>
+                                </td>
                                 <td>
                                   <img src="img/movieImages/<%= data.poster_path %>" height="40" width="40">
                                 </td>

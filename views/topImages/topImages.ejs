@@ -25,6 +25,7 @@
                         <table id="topIMagesTable" class="table table-dark table-striped table-bordered table-hover">
                           <thead>
                             <tr>
+                              <th>ID</th>
                               <th>Image</th>
                               <th>Title</th>
                               <th>Description</th>
@@ -42,6 +43,9 @@
                           <tbody>
                             <% allTopImages.forEach(data=> { %>
                               <tr>
+                                <td>
+                                  <%= data.id %>
+                                </td>
                                 <td>
                                   <img src="img/topImages/<%= data.image %>" height="40" width="40">
                                 </td>

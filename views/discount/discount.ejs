@@ -26,6 +26,7 @@
                                                     class="table table-dark table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
+                                                            <th>ID</th>
                                                             <th>Image</th>
                                                             <th>Name</th>
                                                             <th>Description</th>
@@ -39,6 +40,9 @@
                                                     <tbody>
                                                         <% allDiscount.forEach(data=> { %>
                                                             <tr>
+                                                                <td>
+                                                                    <%= data.id %>
+                                                                </td>
                                                                 <td>
                                                                     <img src="img/discountImages/<%= data.image %>"
                                                                         alt="Discounts" height="40px" width="40px">
