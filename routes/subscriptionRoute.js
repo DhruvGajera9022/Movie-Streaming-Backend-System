@@ -17,5 +17,6 @@ route.post("/add_subscription/delete/:id", subscriptionController.deleteSubscrip
 
 // API
 route.get("/api/subscriptions", subscriptionController.subscriptionAPI);
+route.get("/singleSubscription", subscriptionController.singleSubscriptionAPI);
 
 module.exports = route;

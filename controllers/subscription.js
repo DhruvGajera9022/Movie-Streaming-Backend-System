@@ -156,6 +156,30 @@ const subscriptionAPI = async (req, res) => {
         })
     }
 }
+// Single Subscription API
+const singleSubscriptionAPI = async (req, res) => {
+    try {
+        const subscriptionId = req.query.subscriptionId;
+
+        const subscription = await Subscription.findOne({ where: { id: subscriptionId } });
+
+        res.json({
+            id: subscription.id,
+            title: subscription.title,
+            price: subscription.price,
+            resolution: subscription.resolution,
+            sound_quality: subscription.sound_quality,
+            supported_devices: subscription.supported_devices,
+            connection: subscription.connection,
+        });
+
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in Single Subscription API",
+        });
+    }
+}
 
 
 // Fetch subscription
@@ -175,4 +199,5 @@ module.exports = {
     validateFields,
 
     subscriptionAPI,
+    singleSubscriptionAPI,
 }

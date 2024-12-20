@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator');
 require("dotenv").config();
 
 const Users = require("../models/user");
-const Address = require("../models/address");
 
 const dateHelper = require("../helpers/date_formator");
 const roleHelper = require("../helpers/fetch_role");
@@ -31,7 +30,6 @@ const allUsersData = async (req, res) => {
 
     res.render("users/users", { title: "Users", allData });
 };
-
 
 
 
@@ -150,16 +148,12 @@ const singleUserData = async (req, res) => {
     const userId = req.query.userId;
 
     const userData = await Users.findOne({ where: { id: userId } });
-    let userAddress = await Address.findOne({ where: { user_Id: userId } });
 
-    if (userAddress && userAddress.isDefault) {
-        userAddress = [userAddress];
-    } else {
-        userAddress = [];
-    }
-
-    res.json({ email: userData.email, address: userAddress, number: userData.number });
-
+    res.json({
+        fullName: userData.fullName,
+        email: userData.email,
+        number: userData.number
+    });
 }
 
 

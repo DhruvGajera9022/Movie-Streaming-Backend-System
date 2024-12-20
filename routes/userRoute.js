@@ -16,7 +16,7 @@ router.post("/add_user", userController.userValidationRules, userController.addO
 router.post("/user/delete/:id", userController.deleteUser);
 
 // Get user by id
-router.get("/getUser", Middleware.authenticate, Middleware.isAdmin, userController.singleUserData);
+router.get("/getUser", Middleware.authenticate, userController.singleUserData);
 
 
 module.exports = router;

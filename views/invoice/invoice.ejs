@@ -57,14 +57,24 @@
                                   <%= data.validTo %>
                                 </td>
                                 <td>
-                                  <% if(data.status === true){ %>
+                                  <% if(data.status===true){ %>
                                     <small class="badge badge-success">Success</small>
                                     <% }else{ %>
                                       <small class="badge badge-danger">Failed</small>
                                       <% } %>
                                 </td>
                                 <td>
-
+                                  <a href="javascript:void(0);" class="text-success view-invoice"
+                                    data-invoice-id="<%= data.id %>" 
+                                    data-user-id="<%= data.userId %>"
+                                    data-transaction-id="<%= data.transactionId %>"
+                                    data-subscription-id="<%= data.subscriptionId %>"
+                                    data-validFrom="<%= data.validFrom %>" 
+                                    data-validTo="<%= data.validTo %>"
+                                    data-amount="<%= data.amount %>"
+                                    data-status="<%= data.status %>">
+                                    <i class="fa fa-eye mx-1 fa-lg"></i>
+                                  </a>
                                   <form action="/invoice_delete/<%= data.id %>" method="POST" style="display: inline"
                                     onsubmit="return confirm('Are you sure?')">
                                     <button type="submit" style="
@@ -80,6 +90,69 @@
                               <% }) %>
                           </tbody>
                         </table>
+
+                        <!-- Modal -->
+                        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1"
+                          aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <!-- Modal Header -->
+                              <div class="modal-header">
+                                <div class="d-flex justify-content-center align-items-center w-100">
+                                  <img src="/img/Netflix.jpg" alt="Logo" height="70px" width="70px">
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <hr style="margin: 0; border: 1px solid #f90000;">
+                              <!-- Modal Body -->
+                              <div class="modal-body">
+                                <div class="d-flex justify-content-between" style="padding: 20px;">
+                                  <div>
+                                    <small class="badge badge-success">success</small>
+                                  </div>
+                                  <div class="d-flex flex-column align-items-end">
+                                    <p id="invoiceDate"></p>
+                                    <p id="invoiceID"></p>
+                                  </div>
+                                </div>
+                                <div class="subscription_details">
+                                  <h3>Subscription Information</h3>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Subscription Name: </p>
+                                    <p class="subscription_value" id="subStandard"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Resolution:</p>
+                                    <p class="subscription_value" id="subResolution"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Sound Quality:</p>
+                                    <p class="subscription_value" id="subSound_quality"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Supported Devices:</p>
+                                    <p class="subscription_value" id="subSupported_devices"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Connection:</p>
+                                    <p class="subscription_value" id="subConnection"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Date:</p>
+                                    <p class="subscription_value" id="subDate"></p>
+                                  </div>
+                                  <div class="subscription_row">
+                                    <p class="subscription_label">Amount:</p>
+                                    <p class="subscription_value" id="subAmount"></p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -95,5 +168,5 @@
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark"></aside>
 
-    <%- include("../includes/footer.ejs") %> 
-    <script src="/js/JQuery/invoiceDetails.js"></script>
+    <%- include("../includes/footer.ejs") %>
+      <script src="/js/JQuery/invoiceDetails.js"></script>
