@@ -18,11 +18,13 @@
   },
   "tags": [
     {
-      "name": "Authorization",
+      "name": "Authentication",
       "description": "User authentication and registration"
     },
     { "name": "User Profile", "description": "Managing user profile" },
     { "name": "Movies Management", "description": "Managing movies" },
+    { "name": "Subscription", "description": "Managing subscriptions" },
+    { "name": "Invoice", "description": "Managing invoices" },
     { "name": "Addresses", "description": "Managing user addresses" },
     { "name": "Discounts", "description": "Managing discounts" },
     { "name": "Settings", "description": "Application settings" }
@@ -30,7 +32,7 @@
   "paths": {
     "/api/login": {
       "post": {
-        "tags": ["Authorization"],
+        "tags": ["Authentication"],
         "description": "Authenticate a user and return an authorization token.",
         "parameters": [
           {
@@ -65,7 +67,7 @@
 
     "/api/register": {
       "post": {
-        "tags": ["Authorization"],
+        "tags": ["Authentication"],
         "description": "Register a new user.",
         "parameters": [
           {
@@ -208,6 +210,54 @@
         "responses": {
           "200": {
             "description": "All Categories and Movies details retrieved successfully."
+          },
+          "401": { "description": "Data not found." }
+        }
+      }
+    },
+
+    "/api/subscriptions": {
+      "get": {
+        "tags": ["Subscription"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "All subscriptions details retrieved successfully."
+          },
+          "401": { "description": "Data not found." }
+        }
+      }
+    },
+
+    "/api/invoice": {
+      "get": {
+        "tags": ["Invoice"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "All invoice details retrieved successfully."
+          },
+          "401": { "description": "Data not found." }
+        }
+      }
+    },
+
+    "/api/singInvoice/{id}": {
+      "get": {
+        "tags": ["Invoice"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the invoice."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice details retrieved successfully."
           },
           "401": { "description": "Data not found." }
         }
