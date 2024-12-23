@@ -1,5 +1,4 @@
 const Razorpay = require("razorpay");
-const { DateTime } = require("luxon");
 
 require("dotenv").config();
 const Invoice = require("../models/invoice");
@@ -38,45 +37,66 @@ const payment = async (req, res) => {
 
 // get the transaction data and generate an invoice
 const generateInvoice = async (req, res) => {
-    const paymentData = req.body;
+    try {
+        const paymentData = req.body;
+        const userId = req.userId;
 
-    // console.log("Payment Data: ", paymentData);
+        // console.log("Payment Data: ", paymentData);
 
-    const paymentAllData = await razorpay.payments.fetch(paymentData.payment_id);
-    console.log("Payment Data:", paymentAllData);
+        const paymentAllData = await razorpay.payments.fetch(paymentData.payment_id);
+        console.log("Payment Data:", paymentAllData);
 
-    const status = paymentAllData.captured ? 1 : 0;
-
-    let validFrom = new Date();
-    let validTo = new Date();
-    validTo.setMonth(validTo.getMonth() + 1);
-
-    if (paymentAllData) {
-        const isInvoiceGenerated = await Invoice.create({
-            userId: req.userId,
-            subscriptionId: paymentData.SubId,
-            transactionId: paymentAllData.id,
-            validFrom: validFrom,
-            validTo: validTo,
-            amount: paymentAllData.amount / 100,
-            status,
+        const existingInvoice = await Invoice.findOne({
+            where: { userId: userId },
+            order: [['id', 'DESC']],
         });
 
-        console.log("Invoice generated.");
-        const invoiceId = isInvoiceGenerated.id;
+        const status = paymentAllData.captured ? 1 : 0;
 
-        // Send the invoice ID in the response
+        let validFrom, validTo;
+
+        if (existingInvoice) {
+            validFrom = new Date(existingInvoice.validTo);
+        } else {
+            validFrom = new Date();
+        }
+
+        // Add 1 month to validFrom
+        validTo = new Date(validFrom);
+        validTo.setMonth(validTo.getMonth() + 1);
+
+        if (paymentAllData) {
+            const isInvoiceGenerated = await Invoice.create({
+                userId: userId,
+                subscriptionId: paymentData.SubId,
+                transactionId: paymentAllData.id,
+                validFrom: validFrom,
+                validTo: validTo,
+                amount: paymentAllData.amount / 100,
+                status,
+            });
+
+            console.log("Invoice generated.");
+            const invoiceId = isInvoiceGenerated.id;
+
+            // Send the invoice ID in the response
+            return res.json({
+                status: true,
+                message: "Invoice generated successfully.",
+                invoiceId: invoiceId
+            });
+        }
+
         return res.json({
-            status: true,
-            message: "Invoice generated successfully.",
-            invoiceId: invoiceId
+            status: false,
+            message: "Payment data not found.",
+        });
+    } catch (error) {
+        return res.json({
+            status: false,
+            message: "Error in generate invoice.",
         });
     }
-
-    return res.json({
-        status: false,
-        message: "Payment data not found.",
-    });
 };
 
 
