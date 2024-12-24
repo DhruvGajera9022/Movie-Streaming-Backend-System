@@ -41,31 +41,16 @@ const invoiceAPI = async (req, res) => {
 
         let allInvoices = await Invoice.findAll({ where: { userId } });
 
-        allInvoices = await Promise.all(
-            allInvoices.map(async (invoice) => {
-                let subscription = await Subscriptions.findOne({ where: { id: invoice.subscriptionId } });
-
-                return {
-                    invoice: {
-                        id: invoice.id,
-                        transactionId: invoice.transactionId,
-                        amount: invoice.amount,
-                        validFrom: invoice.validFrom,
-                        validTo: invoice.validTo,
-                        status: invoice.status,
-                    },
-
-                    subscription: {
-                        title: subscription.title,
-                        resolution: subscription.resolution,
-                        sound_quality: subscription.sound_quality,
-                        supported_devices: subscription.supported_devices,
-                        connection: subscription.connection
-                    }
-                }
-
-            })
-        )
+        allInvoices.map(async (invoice) => {
+            return {
+                id: invoice.id,
+                transactionId: invoice.transactionId,
+                amount: invoice.amount,
+                validFrom: invoice.validFrom,
+                validTo: invoice.validTo,
+                status: invoice.status,
+            }
+        });
 
         res.json({
             status: true,
