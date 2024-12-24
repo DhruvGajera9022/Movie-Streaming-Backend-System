@@ -85,6 +85,7 @@ const generateInvoice = async (req, res) => {
                 message: "Invoice generated successfully.",
                 invoiceId: invoiceId
             });
+
         }
 
         return res.json({
