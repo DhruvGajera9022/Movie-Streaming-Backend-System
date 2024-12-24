@@ -242,7 +242,7 @@
       }
     },
 
-    "/api/singInvoice/{id}": {
+    "/api/singleInvoice/{id}": {
       "get": {
         "tags": ["Invoice"],
         "description": "",
