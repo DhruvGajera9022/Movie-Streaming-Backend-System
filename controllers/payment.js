@@ -70,6 +70,7 @@ const generateInvoice = async (req, res) => {
                 userId: userId,
                 subscriptionId: paymentData.SubId,
                 transactionId: paymentAllData.id,
+                date: new Date(),
                 validFrom: validFrom,
                 validTo: validTo,
                 amount: paymentAllData.amount / 100,

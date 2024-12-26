@@ -24,6 +24,10 @@ const Invoice = sequelize.define("invoice", {
         type: Sequelize.FLOAT,
         allowNull: false,
     },
+    date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
     validFrom: {
         type: Sequelize.DATE,
         allowNull: false,

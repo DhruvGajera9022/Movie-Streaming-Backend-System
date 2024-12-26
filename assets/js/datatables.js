@@ -21,7 +21,7 @@ $(document).ready(function () {
 
     $("#inovicetable").dataTable({
         order: [],
-        columnDefs: [{ orderable: false, targets: [8] }]
+        columnDefs: [{ orderable: false, targets: [9] }]
     });
 
     $("#discounttable").dataTable({
