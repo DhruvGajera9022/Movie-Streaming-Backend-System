@@ -159,8 +159,6 @@ const getAllDiscount = async (req, res) => {
 const discountAPI = async (req, res) => {
     let discount = await getAllDiscount();
 
-    let baseURL = `${process.env.URL}${process.env.PORT}`;
-
     discount = discount.filter(discount => discount.isActive);
 
     discount = discount.map((discount) => {
@@ -171,7 +169,7 @@ const discountAPI = async (req, res) => {
             type: discount.type,
             value: discount.value,
             expire: discount.value,
-            image: discount.image ? `${baseURL}/img/discountImages/${discount.image}` : null,
+            image: discount.image ? `${process.env.URL}/img/discountImages/${discount.image}` : null,
             isActive: discount.isActive,
         }
     });

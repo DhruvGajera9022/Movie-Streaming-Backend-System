@@ -367,7 +367,6 @@ const homeAPI = async (req, res) => {
 const singleMovieAPI = async (req, res) => {
     try {
         const id = req.params.id;
-        const baseURL = `${process.env.URL}${process.env.PORT}`;
 
         // Find the movie by ID
         const movie = await Movies.findOne({ where: { id: id } });
@@ -393,7 +392,7 @@ const singleMovieAPI = async (req, res) => {
             title: movie.title,
             overview: await convertOverview(movie.overview),
             category: categoryNames.filter((name) => name !== null),
-            backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
+            backdrop_path: `${process.env.URL}/img/movieImages/${movie.backdrop_path}`,
             original_language: movie.original_language,
             release_date: DateTime.fromISO(movie.release_date).toFormat("DD"),
             vote_average: movie.vote_average,
@@ -418,18 +417,16 @@ const singleMovieAPI = async (req, res) => {
 // For formate the response data
 const movieData = async (movie) => {
 
-    const baseURL = `${process.env.URL}${process.env.PORT}`;
-
     return {
         id: movie.id,
         title: movie.title,
         overview: await convertOverview(movie.overview),
         // adult: movie.adult,
-        backdrop_path: `${baseURL}/img/movieImages/${movie.backdrop_path}`,
+        backdrop_path: `${process.env.URL}/img/movieImages/${movie.backdrop_path}`,
         original_language: movie.original_language,
         // original_title: movie.original_title,
         // popularity: movie.popularity,
-        // poster_path: `${baseURL}/img/movieImages/${movie.poster_path}`,
+        // poster_path: `${process.env.URL}/img/movieImages/${movie.poster_path}`,
         release_date: DateTime.fromISO(movie.release_date).toFormat("DD"),
         // video: movie.video,
         vote_average: movie.vote_average,

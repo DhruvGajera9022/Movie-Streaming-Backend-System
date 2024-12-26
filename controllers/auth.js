@@ -384,8 +384,6 @@ const loginAPI = async (req, res) => {
     req.session.user = { id: user.id, fullName: user.fullName };
     res.cookie("userData", { id: user.id, fullName: user.fullName });
 
-    let baseURL = `${process.env.URL}${process.env.PORT}`;
-
     return res.json({
         status: true,
         message: "Login successful",
@@ -393,7 +391,7 @@ const loginAPI = async (req, res) => {
         data: {
             fullName: user.fullName,
             email: user.email,
-            image: user.image ? `${baseURL}/img/userImages/${user.image}` : null,
+            image: user.image ? `${process.env.URL}/img/userImages/${user.image}` : null,
         },
     });
 };

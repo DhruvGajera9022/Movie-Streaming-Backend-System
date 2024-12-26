@@ -227,7 +227,6 @@ const validateTopImage = [
 const topImagesAPI = async (req, res) => {
     try {
         let topImages = await getAllSliderImages();
-        const baseURL = `${process.env.URL}${process.env.PORT}`;
 
         if (!topImages) {
             res.json({
@@ -262,7 +261,7 @@ const topImagesAPI = async (req, res) => {
                     isPlay: top.isPlay,
                     isMoreInfo: top.isMoreInfo,
                     isImage: top.isImage,
-                    image: `${baseURL}/img/topImages/${top.image}`
+                    image: `${process.env.URL}/img/topImages/${top.image}`
                 }
             })
         )

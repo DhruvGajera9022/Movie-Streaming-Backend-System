@@ -83,6 +83,6 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // start server
 app.listen(process.env.PORT, () => {
-    console.log(`Server started at ${process.env.URL}${process.env.PORT}`.bgWhite.black);
-    console.log(`Swagger Docs at ${process.env.URL}${process.env.PORT}/api-docs`.bgWhite.black);
+    console.log(`Server started at ${process.env.URL}`.bgWhite.black);
+    console.log(`Swagger Docs at ${process.env.URL}/api-docs`.bgWhite.black);
 });
