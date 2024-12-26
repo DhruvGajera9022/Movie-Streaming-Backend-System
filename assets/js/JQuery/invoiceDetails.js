@@ -9,6 +9,7 @@ $(document).on("click", ".view-invoice", function () {
     var amount = $(this).data("amount");
     const status = $(this).data("status");
     var discountId = $(this).data("discount_id");
+    var date = $(this).data("date");
 
     // Define month and weekday names
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -49,7 +50,7 @@ $(document).on("click", ".view-invoice", function () {
     let subDate = document.getElementById("subDate");
     let subAmount = document.getElementById("subAmount");
 
-    invoiceDate.innerHTML = "<strong>Invoice Date: </strong>" + formateDate(validFrom);
+    invoiceDate.innerHTML = "<strong>Invoice Date: </strong>" + formateDate(date);
     invoiceID.innerHTML = "<strong>Invoice ID: </strong>#" + invoiceId;
 
 
