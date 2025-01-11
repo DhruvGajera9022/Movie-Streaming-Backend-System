@@ -1,10 +1,10 @@
-### Movie Streaming Backend System
+# Movie Streaming Backend System
 
 A comprehensive backend system for a movie streaming service built with Node.js, Express.js, MySQL, and integrated with SendGrid for email functionality. The system supports authentication, subscription management, invoice generation, movie catalog management, and payment processing, designed to provide users with access to movies and content on a subscription basis.
 
 ## Features
 
-# 1. Authentication
+## 1. Authentication
 
 - **User Registration**: Allows users to register via email/password.
 - **Login**: Users can log in with email/password or through Google/Facebook OAuth.
