@@ -8,8 +8,6 @@ const morgan = require("morgan");
 const color = require("colors");
 const sgMail = require("@sendgrid/mail");
 
-const connectClient = require("./redis");
-
 const authRoute = require("./routes/authRoute");
 const dashboardRoute = require("./routes/dashboardRoute");
 const profileRoute = require("./routes/profileRoute");
@@ -78,10 +76,6 @@ app.use("/", paymentRoute);
 
 // Url for api documentations
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
-
-// Connection of redis client
-connectClient();
 
 
 // Send Grid
