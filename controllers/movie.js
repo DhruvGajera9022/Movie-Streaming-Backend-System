@@ -362,6 +362,136 @@ const homeAPI = async (req, res) => {
 }
 
 
+// Home API - Contains categories and movies
+const homeRedisAPI = async (req, res) => {
+    try {
+
+        let categories = await Category.findAll({
+            order: [['id', "DESC"]]
+        });
+
+        if (!categories) {
+            res.json({
+                status: false,
+                message: "No category available",
+            });
+        }
+
+        categories = categories.filter(category => category.isActive);
+
+        // Process each category and associate movies
+        const categoryWithMovie = await Promise.all(categories.map(async (cat) => {
+            // Fetch movies for the current category
+            const movies = await getAllMovies();
+
+            const filteredMovies = movies.filter(movie =>
+                movie.genre_ids.includes(cat.id.toString())
+            );
+
+            if (filteredMovies.length === 0) {
+                return {
+                    ...cat.dataValues,
+                    movies: []
+                };
+            }
+
+            const movieDetail = await Promise.all(
+                filteredMovies.map(async (movie) => {
+                    const movies = await movieData(movie);
+                    return movies;
+                })
+            );
+
+            // Attach movie details to the category
+            cat.dataValues.movies = movieDetail;
+            return cat;
+
+        }));
+
+
+        const movies = await getAllMovies();
+
+        const topPics = [];
+        const upcomingMovies = [];
+        const blockbuster = [];
+
+
+        // Add top pics movies to the collection
+        topPics.push(
+            ...movies.filter(movies => movies.vote_average > 7.5)
+        );
+
+        const transformedTopPics = await Promise.all(
+            topPics.map(async (movie) => {
+                const topMovies = await movieData(movie);
+                return topMovies;
+            })
+        );
+
+        let topPicsObj = {
+            title: "Top Pics For You",
+            isActive: true,
+            movies: transformedTopPics,
+        }
+
+
+        // Add upcoming movies to the collection
+        upcomingMovies.push(
+            ...movies.filter(movie => new Date(movie.release_date) > new Date())
+        );
+
+        const transformedMovies = await Promise.all(
+            upcomingMovies.map(async (movie) => {
+                const upcomingMovies = await movieData(movie);
+                return upcomingMovies;
+            })
+        );
+
+        const upcomingMoviesObj = {
+            title: "Upcoming Movie",
+            isActive: true,
+            movies: transformedMovies
+        }
+
+
+        // Add blockbuster movies to the collection
+        blockbuster.push(
+            ...movies.filter(movie => movie.popularity > 100)
+        );
+
+        const transformedBlockbuster = await Promise.all(
+            blockbuster.map(async (movie) => {
+                const blockbusterMovies = await movieData(movie);
+                return blockbusterMovies;
+            })
+        );
+
+        const blockbusterMoviesObj = {
+            title: "Blockbuster Movie",
+            isActive: true,
+            movies: transformedBlockbuster
+        }
+
+
+        res.json({
+            status: true,
+            data: [
+                topPicsObj.isActive == true ? topPicsObj : '',
+                upcomingMoviesObj.isActive == true ? upcomingMoviesObj : '',
+                blockbusterMoviesObj.isActive == true ? blockbusterMoviesObj : '',
+                ...categoryWithMovie
+            ]
+        });
+
+    } catch (error) {
+        res.json({
+            status: false,
+            message: "Error in Home API"
+        });
+    }
+}
+
+
 
 // Single Movie API
 const singleMovieAPI = async (req, res) => {
@@ -454,5 +584,6 @@ module.exports = {
     validateMovie,
 
     homeAPI,
+    homeRedisAPI,
     singleMovieAPI,
 }
