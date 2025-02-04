@@ -1,117 +1,140 @@
 # Movie Streaming Backend System
 
-A comprehensive backend system for a movie streaming service built with Node.js, Express.js, MySQL, and integrated with SendGrid for email functionality. The system supports authentication, subscription management, invoice generation, movie catalog management, and payment processing, designed to provide users with access to movies and content on a subscription basis.
+A comprehensive backend system for a movie streaming service built with **Node.js**, **Express.js**, and **MySQL**, integrated with **SendGrid** for email functionality. This system supports authentication, subscription management, invoice generation, movie catalog management, and payment processing. Designed to provide seamless access to movies and content on a subscription basis, it ensures secure and efficient management of users and media.
 
-## Features
+## 🚀 Features
 
-## 1. Authentication
+### 1. 🔐 Authentication
+- **User Registration:** Register via email/password.
+- **Login:** Login with email/password or through Google/Facebook OAuth.
+- **Session Management:** Utilizes `express-session` with `session-file-store` for session handling.
+- **JWT Authentication:** Secure token-based authentication for protected APIs.
 
-- **User Registration**: Allows users to register via email/password.
-- **Login**: Users can log in with email/password or through Google/Facebook OAuth.
-- **Session Management**: Uses express-session and stores sessions using session-file-store.
-- **JWT Authentication**: Token-based authentication for certain APIs.
+### 2. 👥 Role-Based Access Control (RBAC)
+- **Role Management:** Admins can create and manage user roles (e.g., Admin, User).
+- **Role Assignment:** Assign specific roles to control access to different resources.
 
-## 2. Role-Based Access Control (RBAC)
+### 3. 🎬 Movie Catalog Management
+- **List Movies:** View all available movies in the system.
+- **Manage Movies:** Add, edit, or delete movie details (titles, genres, descriptions).
+- **Top Images:** Manage featured movie images for promotions.
 
-- **Role Management**: Admins can manage user roles (e.g., Admin, User, etc.).
-- **Role Assignment**: Users are assigned roles to access specific resources.
+### 4. 📊 Subscription Management
+- **Manage Subscriptions:** Admins handle user subscription plans.
+- **View Subscription Status:** Users can check and upgrade their subscription plans.
 
-## 3. Movie Catalog Management
+### 5. 🧾 Invoice Management
+- **Generate Invoices:** Admins can create and manage invoices for subscriptions.
+- **Email Invoices:** Send invoices via SendGrid after successful transactions.
 
-- **List Movies**: Admins can view and list all available movies in the system.
-- **Add/Edit/Delete Movies**: Admins can manage movie details including titles, genres, and descriptions.
-- **Top Images**: Admins can manage the top images to be displayed for featured movies.
+### 6. 💸 Discount Management
+- **Manage Discounts:** Create, edit, and delete discount offers for subscriptions or movies.
 
-## 4. Subscription Management
+### 7. 👤 Profile Management
+- **View & Edit Profile:** Users can update personal information and subscription plans.
+- **Change Password:** Secure password management and update options.
 
-- **Manage Subscriptions**: Admins can manage subscription plans for users, allowing users to access movies based on their subscription.
-- **View Subscription Status**: Users can check their subscription status and upgrade if necessary.
+### 8. 💳 Payment Integration
+- **Process Payments:** Secure payment handling for subscriptions and purchases.
+- **Generate Invoices:** Automatic invoice generation post-payment.
 
-## 5 . Invoice Management
+### 9. 🌐 RESTful API Endpoints
+- Provides well-documented RESTful APIs for frontend and third-party integrations.
 
-- **View and Generate Invoices**: Admins can generate and manage invoices for user subscriptions and payments.
-- **Email Invoices**: Invoices can be emailed to users upon successful transactions via SendGrid integration.
+### 10. 📧 SendGrid Integration
+- **Email Notifications:** Subscription invoices, account updates, and notifications via SendGrid.
 
-## 6. Discount Management
+---
 
-- **Manage Discounts**: Admins can create, edit, and delete discount offers for subscriptions or movies.
+## ⚙️ Prerequisites
+Ensure the following are installed:
+- **[Node.js](https://nodejs.org/)** (v14+ recommended)
+- **[MySQL](https://www.mysql.com/)** for database management
 
-## 7. Profile Management
+## 🛠️ Installation
 
-- **View Profile**: Users can view and edit their profile, including their email and subscription plan.
-- **Change Password**: Users can change their passwords.
-
-## 8. Payment Integration
-
-- **Process Payments**: Handles the payment processing for subscription services and movie purchases.
-- **Generate Invoice**: After a successful payment, an invoice is generated for the user.
-
-## 9. API Endpoints
-
-- Provides RESTful API endpoints for external integrations and frontend applications.
-
-## 10. SendGrid Integration
-
-- **Email Notifications**: SendGrid is used for sending emails like subscription invoices, account updates, and other notifications.
-
-## Prerequisites
-
-Ensure you have the following installed:
-
-- [Node.js](https://nodejs.org/) (v14+ recommended)
-- [MySQL](https://www.mysql.com/) for database
-
-## Installation
-
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/DhruvGajera9022/Movie-Streaming-Backend.git
    cd Movie-Streaming-Backend
    ```
-2. Install dependencies:
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
-3. Set up the environment variables.
 
-4. For create Database in MySql:
+3. **Configure environment variables:**
+   - Create a `.env` file and add the necessary environment variables (DB credentials, SendGrid API key, etc.).
 
+4. **Database Migration:**
    ```bash
    npx sequelize-cli db:migrate
    ```
 
-5. Run the Server:
-
+5. **Run the server:**
    ```bash
    npm start
    ```
 
-6. Access Swagger Documentation:
-   ```bash
+6. **Access API Documentation (Swagger):**
+   ```
    http://localhost:3000/api-docs
    ```
 
-## API Documentation
+---
 
-- **Authentication Endpoints**:
-  - `/api/login` - Login via email/password
-  - `/api/register` - Register new users
-- **Profile & Address Endpoints**:
-  - `/api/me`: View user's all details
-  - `/api/editProfile`: Edit user's profile
-  - `/api/changePassword`: Edit user's password
-  - `/api/address`: Get user's addresses
-  - `/api/address`: Edit user's address
-  - `/api/delete/address/:id`: Delete user's address
-- **Movie & Category Endpoints**:
-  - `/api/home`: Get all categories and movies
-  - `/api/topImages`: Get all top movies details
-- **Subscription Endpoints**:
-  - `/api/subscriptions`: Get all subscriptions
-- **Discount Management**:
-  - `/api/discount`: Get all discounts
-- **Invoice Management**:
-  - `/api/invoices`: Get all invoices
-  - `/api/invoices`: Generate new invoice
-- **Payment Endpoints**:
-  - `/api/checkout`: Process a payment
+## 📋 API Documentation
+
+### Authentication Endpoints
+- `POST /api/login` - Login via email/password
+- `POST /api/register` - Register new users
+
+### Profile & Address Endpoints
+- `GET /api/me` - View user details
+- `PUT /api/editProfile` - Edit user profile
+- `PUT /api/changePassword` - Change user password
+- `GET /api/address` - Get user addresses
+- `PUT /api/address` - Edit user address
+- `DELETE /api/delete/address/:id` - Delete user address
+
+### Movie & Category Endpoints
+- `GET /api/home` - Fetch all categories and movies
+- `GET /api/topImages` - Fetch featured movies
+
+### Subscription Endpoints
+- `GET /api/subscriptions` - View all subscription plans
+
+### Discount Management
+- `GET /api/discount` - View all discount offers
+
+### Invoice Management
+- `GET /api/invoices` - Retrieve invoices
+- `POST /api/invoices` - Generate a new invoice
+
+### Payment Endpoints
+- `POST /api/checkout` - Process payments
+
+---
+
+## 📨 SendGrid Setup
+1. **Create a SendGrid account:** [https://sendgrid.com/](https://sendgrid.com/)
+2. **Generate API Key:** Add the key to your `.env` file.
+3. **Integration:** The system automatically handles email notifications for transactions and updates.
+
+## 📦 Technologies Used
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL with Sequelize ORM
+- **Authentication:** JWT, OAuth (Google/Facebook), express-session
+- **Email:** SendGrid
+- **API Documentation:** Swagger
+
+---
+
+### 📧 Contact
+For questions or support, please reach out via [dhruvgajera05@example.com](mailto:dhruvgajera05@example.com).
+
+---
+
+**Happy Streaming! 🎥🍿**
+
